@@ -5,7 +5,11 @@ import java.util.List;
 
 public class Simulator {
 
-    static DamageObject damageObject;
+    public void setDamageObject(DamageObject damageObject) {
+        this.damageObject = damageObject;
+    }
+
+    DamageObject damageObject;
 
 
 /*
@@ -52,30 +56,31 @@ public class Simulator {
  */
 
     public static void main(String[] args) {
-        damageObject = new DamageObject().setAtk_Buff(141)
+        Simulator simulator = new Simulator();
+        simulator.damageObject = new DamageObject().setAtk_Buff(141)
                 .setAtk_PT(12850)
                 .setElementalATKBuff(15)
                 .setElementalATKDebuff(50)
                 .setMagicPhysicalBuff(105)
-                .setSynergyTrue()
+                .setSynergyTrue(true)
                 .setSynergyUpDown(80)
                 .setSynergyPartnerATK(3100)
                 .setDef_ene(11983)
                 .setSecretSkillfromCharacter(765)
-                .setSecretSkillTrue()
+                .setSecretSkillTrue(true)
                 .setSecretSkillUPResDown(170)
                 .setSecretDamageResUPvar(55)
-                .setSecretDamageResUPTrue()
+                .setSecretDamageResUPTrue(true)
                 .setPenetrationUPResDown(75)
-                .setPenetrationTrue()
-                .setAttributeAdvantageTrue()
+                .setPenetrationTrue(true)
+                .setAttributeAdvantageTrue(true)
                 .setWeaknessProtectorBuff(60)
                 .setWeakpointBuff(100)
-                .setWeakpointTrue()
-                .setUnit120True();
+                .setWeakpointTrue(true)
+                .setUnit120True(true);
 
 
-        Simulator simulator = new Simulator();
+
         List<Unit> unitList = UnitPreList.getSpecificUnitByEnumName("EMPTY");
 
 
@@ -114,7 +119,7 @@ public class Simulator {
         }
     }
 
-    private List<DamageResult> results = new ArrayList<>();
+    public List<DamageResult> results = new ArrayList<>();
     private void simulateDamage(Unit... units) {
         DamageObject tempDamageObject = new DamageObject();
         tempDamageObject.addDamageObject(damageObject);

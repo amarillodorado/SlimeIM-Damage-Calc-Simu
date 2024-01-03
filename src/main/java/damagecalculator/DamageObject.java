@@ -289,53 +289,53 @@ public class DamageObject {
         return this;
     }
 
-    public DamageObject setStunTrue() {
-        this.stunTrue = true;
+    public DamageObject setStunTrue(boolean stunTrue) {
+        this.stunTrue = stunTrue;
         return this;
     }
 
-    public DamageObject setCharmTrue() {
-        this.charmTrue = true;
+    public DamageObject setCharmTrue(boolean charmTrue) {
+        this.charmTrue = charmTrue;
         return this;
     }
 
-    public DamageObject setCritTrue() {
-        this.critTrue = true;
+    public DamageObject setCritTrue(boolean critTrue) {
+        this.critTrue = critTrue;
         return this;
     }
 
-    public DamageObject setSecretSkillTrue() {
-        this.secretSkillTrue = true;
+    public DamageObject setSecretSkillTrue(boolean secretSkillTrue) {
+        this.secretSkillTrue = secretSkillTrue;
         return this;
     }
 
-    public DamageObject setSecretDamageResUPTrue() {
-        this.secretDamageResUPTrue = true;
+    public DamageObject setSecretDamageResUPTrue(boolean secretDamageResUPTrue) {
+        this.secretDamageResUPTrue = secretDamageResUPTrue;
         return this;
     }
 
-    public DamageObject setPenetrationTrue() {
-        this.penetrationTrue = true;
+    public DamageObject setPenetrationTrue(boolean penetrationTrue) {
+        this.penetrationTrue = penetrationTrue;
         return this;
     }
 
-    public DamageObject setAttributeAdvantageTrue() {
-        this.attributeAdvantageTrue = true;
+    public DamageObject setAttributeAdvantageTrue(boolean attributeAdvantageTrue) {
+        this.attributeAdvantageTrue = attributeAdvantageTrue;
         return this;
     }
 
-    public DamageObject setWeakpointTrue() {
-        this.weakpointTrue = true;
+    public DamageObject setWeakpointTrue(boolean weakpointTrue) {
+        this.weakpointTrue = weakpointTrue;
         return this;
     }
 
-    public DamageObject setSynergyTrue() {
-        this.synergyTrue = true;
+    public DamageObject setSynergyTrue(boolean synergyTrue) {
+        this.synergyTrue = synergyTrue;
         return this;
     }
 
-    public DamageObject setUnit120True() {
-        this.unit120 = true;
+    public DamageObject setUnit120True(boolean unit120) {
+        this.unit120 = unit120;
         return this;
     }
 

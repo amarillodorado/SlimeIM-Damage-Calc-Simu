@@ -8,17 +8,17 @@ public enum UnitPreList {
     
     VALENTINE_OCTA(new Unit("Valentine Octagram", new DamageObject()
             .setSecretSkillUPResDown(80)
-            .setSecretSkillTrue()
+            .setSecretSkillTrue(true)
     )),
     VIOLET_WM(new Unit("Violet WM", new DamageObject()
             .setSecretDamageResUPvar(55)
-            .setSecretDamageResUPTrue()
+            .setSecretDamageResUPTrue(true)
             .setCritBuffANDDebuff(40)
-            .setCritTrue()
+            .setCritTrue(true)
             )),
     AQUA(new Unit("Aqua", new DamageObject()
             .setPenetrationUPResDown(60)
-            .setPenetrationTrue()
+            .setPenetrationTrue(true)
             )),
     HINATA_WOM(new Unit("Hinata WoM", new DamageObject()
             .setElementalATKBuff(50)
@@ -31,13 +31,13 @@ public enum UnitPreList {
             )),
 
     JAUNE_VOC(new Unit("Jaune VoC", new DamageObject()
-            .setSecretSkillTrue()
+            .setSecretSkillTrue(true)
             .setSecretSkillUPResDown(100)
             )),
 
     BLANC_VOC(new Unit("Blanc VoC", new DamageObject()
             .setWeakpointBuff(100)
-            .setWeakpointTrue()
+            .setWeakpointTrue(true)
             )),
 
     Rimuru_FOW(new Unit("Rimuru FoW", new DamageObject()
@@ -47,8 +47,8 @@ public enum UnitPreList {
 
     GUY_WM(new Unit("Guy WM", new DamageObject()
             .setSecretSkillUPResDown(80)
-            .setSecretSkillTrue()
-            .setCritTrue()
+            .setSecretSkillTrue(true)
+            .setCritTrue(true)
             ));
 
     private final Unit unit;

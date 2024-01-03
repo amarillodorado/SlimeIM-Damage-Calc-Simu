@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @PageTitle("Main")
-@Route(value = "")
+@Route(value = "/MainView")
 public class MainView extends VerticalLayout {
     Grid<DamageResult> simulationResultsGrid = new Grid<>(DamageResult.class, false);
 

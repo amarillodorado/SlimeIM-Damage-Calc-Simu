@@ -4,8 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
     <!-- Project from https://start.vaadin.com/project/e43c57a7-68b1-4364-9650-427988af88c0 -->
     <groupId>com.example.application</groupId>
-    <artifactId>my-todo</artifactId>
-    <name>my-todo</name>
+    <artifactId>slime-calc</artifactId>
+    <name>slime-calc</name>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 

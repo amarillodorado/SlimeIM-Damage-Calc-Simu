@@ -1,6 +1,6 @@
 FROM maven:3.9.6-eclipse-temurin-21-jammy AS build
 COPY . .
-RUN mvn clean -Pproduction
+RUN mvn install -Pproduction
 
 FROM openjdk:21-jdk-slim
 COPY --from=build /target/*.jar app.jar

@@ -57,43 +57,42 @@ public class Simulator {
 
     public static void main(String[] args) {
         Simulator simulator = new Simulator();
-        simulator.damageObject = new DamageObject().setAtk_Buff(141)
-                .setAtk_PT(12850)
-                .setElementalATKBuff(15)
-                .setElementalATKDebuff(50)
-                .setMagicPhysicalBuff(105)
+        simulator.damageObject = new DamageObject()
+                .setAtk_PT(12332)
+                .setAtk_Buff(60)
+                .setMagicPhysicalBuff(5)
                 .setSynergyTrue(true)
-                .setSynergyUpDown(80)
-                .setSynergyPartnerATK(3100)
-                .setDef_ene(11983)
-                .setSecretSkillfromCharacter(765)
-                .setSecretSkillTrue(true)
-                .setSecretSkillUPResDown(170)
-                .setSecretDamageResUPvar(55)
-                .setSecretDamageResUPTrue(true)
-                .setPenetrationUPResDown(75)
-                .setPenetrationTrue(true)
-                .setAttributeAdvantageTrue(true)
+                .setCritTrue(true)
+                .setCritBuffANDDebuff(4)
+                .setSynergyUpDown(4)
+                .setSynergyPartnerATK(5260)
                 .setWeaknessProtectorBuff(60)
-                .setWeakpointBuff(100)
+                .setWeakpointBuff(60)
                 .setWeakpointTrue(true)
-                .setUnit120True(true);
+                .setSecretSkillTrue(true)
+                .setSecretSkillfromCharacter(490)
+                .setAttributeAdvantageTrue(true)
+                .setDef_ene(11752);
+
+
+        System.out.println(simulator.damageObject.calculateDamage());
 
 
 
-        List<Unit> unitList = UnitPreList.getSpecificUnitByEnumName("EMPTY");
+        //List<Unit> unitList = UnitPreList.getSpecificUnitByEnumName("EMPTY");
 
 
         //System.out.println(UnitPreList.getAllEnumNames());
 
-        simulator.combinationHandler(unitList,1);
-        simulator.printResultsSortedByDamageDescending();
+        //simulator.combinationHandler(unitList,1);
+        //simulator.printResultsSortedByDamageDescending();
         //simulator.printResultsSortedByName();
         //simulator.printResultsSortedByNameAscendingThenDamageDescending();
     }
 
     // Methode zum Erzeugen von Kombinationen und Aufrufen von simulateDamage
     public void combinationHandler(List<Unit> allUnits, int combinationSize) {
+        results = new ArrayList<>();
         if(combinationSize > allUnits.size()) {
             System.out.println("Fehler: Die Anzahl der ausgewählten Units (" + combinationSize +
                     ") ist größer als d" +

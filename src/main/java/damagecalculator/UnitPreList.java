@@ -7,18 +7,18 @@ public enum UnitPreList {
     EMPTY(new Unit("empty", new DamageObject())),
     
     VALENTINE_OCTA(new Unit("Valentine Octagram", new DamageObject()
-            .setSecretSkillUPResDown(80)
+            .setSecretSkillBuff(80)
             .setSecretSkillTrue(true)
     )),
     VIOLET_WM(new Unit("Violet WM", new DamageObject()
-            .setSecretDamageResUPvar(55)
-            .setSecretDamageResUPTrue(true)
+            .setSecretDamageResistanceDown(55)
+            .setSecretSkillTrue(true)
             .setCritBuffANDDebuff(40)
             .setCritTrue(true)
             )),
     AQUA(new Unit("Aqua", new DamageObject()
-            .setPenetrationUPResDown(60)
-            .setPenetrationTrue(true)
+            .setPierceUPResDown(60)
+            .setPierceTrue(true)
             )),
     HINATA_WOM(new Unit("Hinata WoM", new DamageObject()
             .setElementalATKBuff(50)
@@ -32,7 +32,7 @@ public enum UnitPreList {
 
     JAUNE_VOC(new Unit("Jaune VoC", new DamageObject()
             .setSecretSkillTrue(true)
-            .setSecretSkillUPResDown(100)
+            .setSecretSkillBuff(100)
             )),
 
     BLANC_VOC(new Unit("Blanc VoC", new DamageObject()
@@ -45,8 +45,19 @@ public enum UnitPreList {
             .setMagicPhysicalDebuff(20)
             )),
 
+    Shinsha_NYB(new Unit("Shinsha NYB", new DamageObject()
+            .setSecretSkillBuff(80)
+            .setCritBuffANDDebuff(40)
+            )),
+
+    Milim_V2_NYB(new Unit("Milim V2 NYB",new DamageObject()
+            .setSecretDamageResistanceDown(40)
+            .setSecretSkillTrue(true)
+            .setSynergyUpDown(20)
+            )),
+
     GUY_WM(new Unit("Guy WM", new DamageObject()
-            .setSecretSkillUPResDown(80)
+            .setSecretSkillBuff(80)
             .setSecretSkillTrue(true)
             .setCritTrue(true)
             ));

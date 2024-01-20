@@ -4,10 +4,10 @@ public class DamageObject {
     double atk_Debuff, atk_Buff, atk_PT, elementalATKBuff, elementalATKDebuff, synergyUpDown,synergyPartnerATK;
     double MagicPhysicalBuff, MagicPhysicalDebuff, attributeResBuff, attributeResDown;
     double attackResBuff, attackResDown, def_ene, def_up, def_down;
-    double stundStrikeMulti, charmStrikeBuff, critBuffANDDebuff, secretSkillfromCharacter;
-    double secretSkillUPResDown, secretDamageResUPvar, penetrationUPResDown, weaknessProtectorBuff, weakpointBuff;
-    boolean stunTrue, charmTrue, critTrue, secretSkillTrue, secretDamageResUPTrue;
-    boolean penetrationTrue, attributeAdvantageTrue, weakpointTrue, synergyTrue, unit120;
+    double stunStrikeDamageUPDOWN, enamorStrikeBuff, critBuffANDDebuff, secretSkillfromCharacter;
+    double secretSkillBuff, secretDamageResistanceDown, pierceUPResDown, weaknessProtectorBuff, weakpointBuff;
+    boolean stunTrue, enamorTrue, critTrue, secretSkillTrue;
+    boolean pierceTrue, attributeAdvantageTrue, weakpointTrue, synergyTrue, unit120;
         
     public void addDamageObject(DamageObject damageObject){
             atk_Debuff += damageObject.atk_Debuff;
@@ -24,13 +24,13 @@ public class DamageObject {
             def_ene += damageObject.def_ene;
             def_up += damageObject.def_up;
             def_down += damageObject.def_down;
-            stundStrikeMulti += damageObject.stundStrikeMulti;
-            charmStrikeBuff += damageObject.charmStrikeBuff;
+            stunStrikeDamageUPDOWN += damageObject.stunStrikeDamageUPDOWN;
+            enamorStrikeBuff += damageObject.enamorStrikeBuff;
             critBuffANDDebuff += damageObject.critBuffANDDebuff;
             secretSkillfromCharacter += damageObject.secretSkillfromCharacter;
-            secretSkillUPResDown += damageObject.secretSkillUPResDown;
-            secretDamageResUPvar += damageObject.secretDamageResUPvar;
-            penetrationUPResDown += damageObject.penetrationUPResDown;
+            secretSkillBuff += damageObject.secretSkillBuff;
+            secretDamageResistanceDown += damageObject.secretDamageResistanceDown;
+            pierceUPResDown += damageObject.pierceUPResDown;
             weaknessProtectorBuff += damageObject.weaknessProtectorBuff;
             weakpointBuff += damageObject.weakpointBuff;
             synergyUpDown += damageObject.synergyUpDown;
@@ -39,11 +39,10 @@ public class DamageObject {
             // Aggregation der booleschen Werte
             synergyTrue |= damageObject.synergyTrue;
             stunTrue |= damageObject.stunTrue;
-            charmTrue |= damageObject.charmTrue;
+            enamorTrue |= damageObject.enamorTrue;
             critTrue |= damageObject.critTrue;
             secretSkillTrue |= damageObject.secretSkillTrue;
-            secretDamageResUPTrue |= damageObject.secretDamageResUPTrue;
-            penetrationTrue |= damageObject.penetrationTrue;
+            pierceTrue |= damageObject.pierceTrue;
             attributeAdvantageTrue |= damageObject.attributeAdvantageTrue;
             weakpointTrue |= damageObject.weakpointTrue;
             unit120 |= damageObject.unit120;
@@ -51,7 +50,7 @@ public class DamageObject {
 
     public double calculateDamage() {
         // ATK Buff
-        double synergyATK = synergyPartnerATK * 0.5 * (1+synergyUpDown / 100);
+        double synergyATK = synergyPartnerATK * 0.5 * (1+(synergyUpDown / 100));
         atk_PT = synergyTrue ? atk_PT + synergyATK : atk_PT;
         double atk_plus_buffATK = atk_PT * (atk_Buff) / 100;
         double atk_plus_debuffATK = atk_PT * (atk_Debuff) / 100;
@@ -89,7 +88,7 @@ public class DamageObject {
         // Variante 1
         double attributeResUP = def_AND_down * (attributeResBuff) / 100;
         double attributeResDOWN = def_AND_down * (attributeResDown) / 100;
-        double def_plus_elementalRES = def_AND_down + attributeResDOWN + attributeResUP;
+        double def_plus_elementalRES = def_AND_down - attributeResDOWN + attributeResUP;
 
         double attackResUP = def_plus_elementalRES * (attackResBuff) / 100;
         double attackResDOWN = def_plus_elementalRES * (attackResDown) / 100;
@@ -102,7 +101,7 @@ public class DamageObject {
 
         double attributeResUP2 = attackRes_applied2 * (attributeResBuff) / 100;
         double attributeResDOWN2 = attackRes_applied2 * (attributeResDown) / 100;
-        double attack_attribute_Res_applied2 = attackRes_applied2 + attributeResUP2 + attributeResDOWN2;
+        double attack_attribute_Res_applied2 = attackRes_applied2 + attributeResUP2 - attributeResDOWN2;
 
         double defUP_allApplied = Math.max(attack_attribute_Res_applied2, attack_attribute_Res_applied);
 
@@ -110,13 +109,13 @@ public class DamageObject {
 
 
         // Stun Strike
-        double stunStrikeMutliplyer = stundStrikeMulti;
+        double stunStrikeMutliplyer = stunStrikeDamageUPDOWN;
         double stunStrike = stunTrue ? basedamage + basedamage * stunStrikeMutliplyer / 100 : basedamage;
 
 
         // Charm Strike
-        double charmStrikeUP = charmStrikeBuff;
-        double charmStrike = charmTrue ? stunStrike + stunStrike * charmStrikeUP / 100 : stunStrike;
+        double charmStrikeUP = enamorStrikeBuff;
+        double charmStrike = enamorTrue ? stunStrike + stunStrike * charmStrikeUP / 100 : stunStrike;
 
 
         // Critical Damage
@@ -125,26 +124,26 @@ public class DamageObject {
 
 
         // Secret Skill UP
-        double secretSkillUltCharacterUP = critDamage * secretSkillfromCharacter / 100;
-        double secretSkillUltSkillUP = secretSkillUPResDown;
+        double secretSkillUltCharacterUP = critDamage * (1+secretSkillfromCharacter / 100);
+        double secretSkillUltSkillUP = secretSkillBuff;
         double secretSkillUltDamage = secretSkillTrue ? secretSkillUltCharacterUP + secretSkillUltCharacterUP * secretSkillUltSkillUP / 100 : critDamage;
 
 
         // Don't use, need res up and down
-        double secretDamageResDown = secretDamageResUPvar;//(mysdam_res_up_eizoku + mysdam_res_up_turn) * -1 - mysdam_res_down_kago_sukiru * mysdam_res_down_kago_sukiru_kaisu - mysdam_res_down_sentou_sukiru;
-        double secretDamageRes = secretDamageResUPTrue ? secretSkillUltDamage + secretSkillUltDamage * secretDamageResDown / 100 : secretSkillUltDamage;
+        double secretDamageResDown = secretDamageResistanceDown;//(mysdam_res_up_eizoku + mysdam_res_up_turn) * -1 - mysdam_res_down_kago_sukiru * mysdam_res_down_kago_sukiru_kaisu - mysdam_res_down_sentou_sukiru;
+        double secretDamageRes = secretSkillTrue ? secretSkillUltDamage + secretSkillUltDamage * secretDamageResDown / 100 : secretSkillUltDamage;
 
         double damage1 = secretDamageRes >= 0 ? secretDamageRes : 1;
 
 
         // Penetration damage
-        double penDamage = damage1 + ATKBuffs_applied * 6 / 100;
-        double penUP = penetrationUPResDown;
-        double penetration = penetrationTrue ? penDamage + penDamage * penUP / 100 : damage1;
+        double pierceDamage = damage1 + ATKBuffs_applied * 6 / 100;
+        double pierceUP = pierceUPResDown;
+        double pierce = pierceTrue ? pierceDamage + pierceDamage * pierceUP / 100 : damage1;
 
 
         // Attribute Advantage
-        double attributeAdvantage = attributeAdvantageTrue ? penetration * 1.5 : penetration;
+        double attributeAdvantage = attributeAdvantageTrue ? pierce * 1.5 : pierce;
 
 
         // Protector damage up against weakness attribute
@@ -154,7 +153,7 @@ public class DamageObject {
 
         // Weakpoint
         double weakpointUP = weakpointBuff / 100;
-        double weakpoint = weakpointTrue ? damageUP + penetration * weakpointUP : damageUP;
+        double weakpoint = weakpointTrue ? damageUP + pierce * weakpointUP : damageUP;
 
         double checkvalidValue = weakpoint >= 0 ? weakpoint : 1;
 
@@ -244,13 +243,13 @@ public class DamageObject {
         return this;
     }
 
-    public DamageObject setStundStrikeMulti(double stundStrikeMulti) {
-        this.stundStrikeMulti = stundStrikeMulti;
+    public DamageObject setStunStrikeDamageUPDOWN(double stunStrikeDamageUPDOWN) {
+        this.stunStrikeDamageUPDOWN = stunStrikeDamageUPDOWN;
         return this;
     }
 
-    public DamageObject setCharmStrikeBuff(double charmStrikeBuff) {
-        this.charmStrikeBuff = charmStrikeBuff;
+    public DamageObject setEnamorStrikeBuff(double enamorStrikeBuff) {
+        this.enamorStrikeBuff = enamorStrikeBuff;
         return this;
     }
 
@@ -264,18 +263,18 @@ public class DamageObject {
         return this;
     }
 
-    public DamageObject setSecretSkillUPResDown(double secretSkillUPResDown) {
-        this.secretSkillUPResDown = secretSkillUPResDown;
+    public DamageObject setSecretSkillBuff(double secretSkillBuff) {
+        this.secretSkillBuff = secretSkillBuff;
         return this;
     }
 
-    public DamageObject setSecretDamageResUPvar(double secretDamageResUPvar) {
-        this.secretDamageResUPvar = secretDamageResUPvar;
+    public DamageObject setSecretDamageResistanceDown(double secretDamageResistanceDown) {
+        this.secretDamageResistanceDown = secretDamageResistanceDown;
         return this;
     }
 
-    public DamageObject setPenetrationUPResDown(double penetrationUPResDown) {
-        this.penetrationUPResDown = penetrationUPResDown;
+    public DamageObject setPierceUPResDown(double pierceUPResDown) {
+        this.pierceUPResDown = pierceUPResDown;
         return this;
     }
 
@@ -294,8 +293,8 @@ public class DamageObject {
         return this;
     }
 
-    public DamageObject setCharmTrue(boolean charmTrue) {
-        this.charmTrue = charmTrue;
+    public DamageObject setEnamorTrue(boolean enamorTrue) {
+        this.enamorTrue = enamorTrue;
         return this;
     }
 
@@ -309,13 +308,8 @@ public class DamageObject {
         return this;
     }
 
-    public DamageObject setSecretDamageResUPTrue(boolean secretDamageResUPTrue) {
-        this.secretDamageResUPTrue = secretDamageResUPTrue;
-        return this;
-    }
-
-    public DamageObject setPenetrationTrue(boolean penetrationTrue) {
-        this.penetrationTrue = penetrationTrue;
+    public DamageObject setPierceTrue(boolean pierceTrue) {
+        this.pierceTrue = pierceTrue;
         return this;
     }
 
@@ -339,6 +333,141 @@ public class DamageObject {
         return this;
     }
 
+    public double getAtk_Debuff() {
+        return atk_Debuff;
+    }
+
+    public double getAtk_Buff() {
+        return atk_Buff;
+    }
+
+    public double getAtk_PT() {
+        return atk_PT;
+    }
+
+    public double getElementalATKBuff() {
+        return elementalATKBuff;
+    }
+
+    public double getElementalATKDebuff() {
+        return elementalATKDebuff;
+    }
+
+    public double getSynergyUpDown() {
+        return synergyUpDown;
+    }
+
+    public double getSynergyPartnerATK() {
+        return synergyPartnerATK;
+    }
+
+    public double getMagicPhysicalBuff() {
+        return MagicPhysicalBuff;
+    }
+
+    public double getMagicPhysicalDebuff() {
+        return MagicPhysicalDebuff;
+    }
+
+    public double getAttributeResBuff() {
+        return attributeResBuff;
+    }
+
+    public double getAttributeResDown() {
+        return attributeResDown;
+    }
+
+    public double getAttackResBuff() {
+        return attackResBuff;
+    }
+
+    public double getAttackResDown() {
+        return attackResDown;
+    }
+
+    public double getDef_ene() {
+        return def_ene;
+    }
+
+    public double getDef_up() {
+        return def_up;
+    }
+
+    public double getDef_down() {
+        return def_down;
+    }
+
+    public double getStunStrikeDamageUPDOWN() {
+        return stunStrikeDamageUPDOWN;
+    }
+
+    public double getEnamorStrikeBuff() {
+        return enamorStrikeBuff;
+    }
+
+    public double getCritBuffANDDebuff() {
+        return critBuffANDDebuff;
+    }
+
+    public double getSecretSkillfromCharacter() {
+        return secretSkillfromCharacter;
+    }
+
+    public double getSecretSkillBuff() {
+        return secretSkillBuff;
+    }
+
+    public double getSecretDamageResistanceDown() {
+        return secretDamageResistanceDown;
+    }
+
+    public double getPierceUPResDown() {
+        return pierceUPResDown;
+    }
+
+    public double getWeaknessProtectorBuff() {
+        return weaknessProtectorBuff;
+    }
+
+    public double getWeakpointBuff() {
+        return weakpointBuff;
+    }
+
+    public boolean isStunTrue() {
+        return stunTrue;
+    }
+
+    public boolean isEnamorTrue() {
+        return enamorTrue;
+    }
+
+    public boolean isCritTrue() {
+        return critTrue;
+    }
+
+    public boolean isSecretSkillTrue() {
+        return secretSkillTrue;
+    }
+
+    public boolean isPierceTrue() {
+        return pierceTrue;
+    }
+
+    public boolean isAttributeAdvantageTrue() {
+        return attributeAdvantageTrue;
+    }
+
+    public boolean isWeakpointTrue() {
+        return weakpointTrue;
+    }
+
+    public boolean isSynergyTrue() {
+        return synergyTrue;
+    }
+
+    public boolean isUnit120() {
+        return unit120;
+    }
 }
 
 

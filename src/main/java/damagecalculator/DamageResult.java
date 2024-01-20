@@ -4,18 +4,18 @@ import java.util.Comparator;
 //
 public class DamageResult{
     private String unitNames;
-    private double damage;
+    private int damage;
 
     public DamageResult(String unitNames, double damage) {
         this.unitNames = unitNames;
-        this.damage = damage;
+        this.damage = (int) damage;
     }
 
     public String getUnitNames() {
         return unitNames;
     }
 
-    public double getDamage() {
+    public int getDamage() {
         return damage;
     }
 

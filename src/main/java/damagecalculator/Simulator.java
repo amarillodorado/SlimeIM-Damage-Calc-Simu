@@ -11,68 +11,24 @@ public class Simulator {
 
     DamageObject damageObject;
 
-
-/*
-    private void setValues(){
-
-        atk_Debuff = 0;
-        atk_Buff = 141;
-        atk_PT = 12850;
-        elementalATKBuff = 15;
-        elementalATKDebuff = 50;
-        MagicPhysicalBuff = 105;
-        MagicPhysicalDebuff = 0;
-        attributeResBuff = 0;
-        attributeResDown = 0;
-        attackResBuff = 0;
-        attackResDown = 0;
-        synergyTrue = true;
-        synergyUpDown = 80;
-        synergyPartnerATK = 3100;
-        def_ene = 11983;
-        def_up = 0;
-        def_down = 0;
-        stundStrikeMulti = 0;
-        stunTrue = false;
-        charmStrikeBuff = 0;
-        charmTrue = false;
-        critBuffANDDebuff = 0;
-        critTrue = false;
-        secretSkillfromCharacter = 765;
-        secretSkillUPResDown = 170;
-        secretSkillTrue = true;
-        secretDamageResUPvar = 55;
-        secretDamageResUPTrue = true;
-        penetrationUPResDown = 75;
-        penetrationTrue = true;
-        attributeAdvantageTrue = true;
-        weaknessProtectorBuff = 60;
-        weakpointBuff = 100;
-        weakpointTrue = true;
-        unit120 = true; //If the unit is 120 multiply ult with 1.2
-
-    }
-
- */
-
     public static void main(String[] args) {
         Simulator simulator = new Simulator();
         simulator.damageObject = new DamageObject()
-                .setAtk_PT(12332)
-                .setAtk_Buff(60)
-                .setMagicPhysicalBuff(5)
-                .setSynergyTrue(true)
-                .setCritTrue(true)
-                .setCritBuffANDDebuff(4)
-                .setSynergyUpDown(4)
-                .setSynergyPartnerATK(5260)
-                .setWeaknessProtectorBuff(60)
-                .setWeakpointBuff(60)
+                .setAtk_Initial(13352)
+                        .setSynergyPartnerATK(6097)
+                .setAtk_Buff(66)
+                                .setAttackResDown(20)
+                                        .setMagicPhysicalBuff(65)
+                                                        .setWeaknessProtectorBuff(60)
                 .setWeakpointTrue(true)
-                .setSecretSkillTrue(true)
-                .setSecretSkillfromCharacter(490)
-                .setAttributeAdvantageTrue(true)
-                .setDef_ene(11752);
+                .setWeaknessStrikeBuff(60)
+                                                                .setDef_Initial(11752)
+                                                                        .setSynergyTrue(true)
+                                                                                .setCritTrue(true)
+                                                                                        .setSecretSkillfromCharacter(765)
+                                                                                                .setSecretSkillTrue(true)
+                .setAttributeAdvantageTrue(true);
+
 
 
         System.out.println(simulator.damageObject.calculateDamage());
@@ -90,7 +46,6 @@ public class Simulator {
         //simulator.printResultsSortedByNameAscendingThenDamageDescending();
     }
 
-    // Methode zum Erzeugen von Kombinationen und Aufrufen von simulateDamage
     public void combinationHandler(List<Unit> allUnits, int combinationSize) {
         results = new ArrayList<>();
         if(combinationSize > allUnits.size()) {

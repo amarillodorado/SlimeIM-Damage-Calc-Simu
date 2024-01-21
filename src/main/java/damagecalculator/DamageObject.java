@@ -1,18 +1,18 @@
 package damagecalculator;
 
 public class DamageObject {
-    double atk_Debuff, atk_Buff, atk_PT, elementalATKBuff, elementalATKDebuff, synergyUpDown,synergyPartnerATK;
+    double atk_Debuff, atk_Buff, atk_Initial, elementalATKBuff, elementalATKDebuff, synergyUpDown,synergyPartnerATK;
     double MagicPhysicalBuff, MagicPhysicalDebuff, attributeResBuff, attributeResDown;
-    double attackResBuff, attackResDown, def_ene, def_up, def_down;
+    double attackResBuff, attackResDown, def_Initial, def_up, def_down;
     double stunStrikeDamageUPDOWN, enamorStrikeBuff, critBuffANDDebuff, secretSkillfromCharacter;
-    double secretSkillBuff, secretDamageResistanceDown, pierceUPResDown, weaknessProtectorBuff, weakpointBuff;
+    double secretSkillBuff, secretDamageResistanceDown, pierceUPResDown, weaknessProtectorBuff, weaknessStrikeBuff;
     boolean stunTrue, enamorTrue, critTrue, secretSkillTrue;
-    boolean pierceTrue, attributeAdvantageTrue, weakpointTrue, synergyTrue, unit120;
+    boolean pierceTrue, attributeAdvantageTrue, weakpointTrue, synergyTrue;
         
     public void addDamageObject(DamageObject damageObject){
             atk_Debuff += damageObject.atk_Debuff;
             atk_Buff += damageObject.atk_Buff;
-            atk_PT += damageObject.atk_PT;
+            atk_Initial += damageObject.atk_Initial;
             elementalATKBuff += damageObject.elementalATKBuff;
             elementalATKDebuff += damageObject.elementalATKDebuff;
             MagicPhysicalBuff += damageObject.MagicPhysicalBuff;
@@ -21,7 +21,7 @@ public class DamageObject {
             attributeResDown += damageObject.attributeResDown;
             attackResBuff += damageObject.attackResBuff;
             attackResDown += damageObject.attackResDown;
-            def_ene += damageObject.def_ene;
+            def_Initial += damageObject.def_Initial;
             def_up += damageObject.def_up;
             def_down += damageObject.def_down;
             stunStrikeDamageUPDOWN += damageObject.stunStrikeDamageUPDOWN;
@@ -32,7 +32,7 @@ public class DamageObject {
             secretDamageResistanceDown += damageObject.secretDamageResistanceDown;
             pierceUPResDown += damageObject.pierceUPResDown;
             weaknessProtectorBuff += damageObject.weaknessProtectorBuff;
-            weakpointBuff += damageObject.weakpointBuff;
+            weaknessStrikeBuff += damageObject.weaknessStrikeBuff;
             synergyUpDown += damageObject.synergyUpDown;
             synergyPartnerATK += damageObject.synergyPartnerATK;
 
@@ -45,43 +45,42 @@ public class DamageObject {
             pierceTrue |= damageObject.pierceTrue;
             attributeAdvantageTrue |= damageObject.attributeAdvantageTrue;
             weakpointTrue |= damageObject.weakpointTrue;
-            unit120 |= damageObject.unit120;
         }
 
     public double calculateDamage() {
         // ATK Buff
         double synergyATK = synergyPartnerATK * 0.5 * (1+(synergyUpDown / 100));
-        atk_PT = synergyTrue ? atk_PT + synergyATK : atk_PT;
-        double atk_plus_buffATK = atk_PT * (atk_Buff) / 100;
-        double atk_plus_debuffATK = atk_PT * (atk_Debuff) / 100;
-        double ATKBuffs_applied = atk_PT + atk_plus_buffATK + atk_plus_debuffATK;
+        atk_Initial = synergyTrue ? atk_Initial + synergyATK : atk_Initial;
+        double atk_plus_buffATK = atk_Initial * (atk_Buff) / 100;
+        double atk_plus_debuffATK = atk_Initial * (atk_Debuff) / 100;
+        double ATKBuffs_applied = atk_Initial + atk_plus_buffATK - atk_plus_debuffATK;
 
 
         // Variante 1 Magic/Physical/Attribute ATK
         double atkBuffs_plus_elementalATKBuff = ATKBuffs_applied * (elementalATKBuff) / 100;
         double atkBuffs_plus_elementalATKdebuff = ATKBuffs_applied * (elementalATKDebuff) / 100;
-        double ElementalBuffs_applied = ATKBuffs_applied + atkBuffs_plus_elementalATKdebuff + atkBuffs_plus_elementalATKBuff;
+        double ElementalBuffs_applied = ATKBuffs_applied - atkBuffs_plus_elementalATKdebuff + atkBuffs_plus_elementalATKBuff;
 
         double atkBuff_elemental_Buff_MaPhyBuff = ElementalBuffs_applied * (MagicPhysicalBuff) / 100;
         double atkBuff_elemental_Buff_MaPhyDebuff = ElementalBuffs_applied * (MagicPhysicalDebuff) / 100;
-        double physicalmagiBuffs_applied = ElementalBuffs_applied + atkBuff_elemental_Buff_MaPhyBuff + atkBuff_elemental_Buff_MaPhyDebuff;
+        double physicalmagiBuffs_applied = ElementalBuffs_applied + atkBuff_elemental_Buff_MaPhyBuff - atkBuff_elemental_Buff_MaPhyDebuff;
 
         // Variante 2
         double atkBuff_elemental_Buff_MaPhyBuff_basedATKBuff = ATKBuffs_applied * (MagicPhysicalBuff) / 100;
         double atkBuff_elemental_Buff_MaPhyDebuff_basedATKBuff = ATKBuffs_applied * (MagicPhysicalDebuff) / 100;
-        double physicalmagiBuffs_applied_baseATKBuff = ATKBuffs_applied + atkBuff_elemental_Buff_MaPhyDebuff_basedATKBuff + atkBuff_elemental_Buff_MaPhyBuff_basedATKBuff;
+        double physicalmagiBuffs_applied_baseATKBuff = ATKBuffs_applied - atkBuff_elemental_Buff_MaPhyDebuff_basedATKBuff + atkBuff_elemental_Buff_MaPhyBuff_basedATKBuff;
 
         double attributeATKPowerUP2 = physicalmagiBuffs_applied_baseATKBuff * (elementalATKBuff) / 100;
         double attributeATKPowerDOWN2 = physicalmagiBuffs_applied_baseATKBuff * (elementalATKDebuff) / 100;
-        double attributeATKPowerUP2_applied = physicalmagiBuffs_applied_baseATKBuff + attributeATKPowerDOWN2 + attributeATKPowerUP2;
+        double attributeATKPowerUP2_applied = physicalmagiBuffs_applied_baseATKBuff - attributeATKPowerDOWN2 + attributeATKPowerUP2;
 
         double atkBuffs_andOther_applied = Math.max(attributeATKPowerUP2_applied, physicalmagiBuffs_applied);
 
 
         // Defence
-        double defenceUP = def_ene * (def_up) / 100;
-        double defenceDOWN = def_ene * (def_down) / 100;
-        double def_AND_down = def_ene + defenceDOWN + defenceUP;
+        double defenceUP = def_Initial * (def_up) / 100;
+        double defenceDOWN = def_Initial * (def_down) / 100;
+        double def_AND_down = def_Initial + defenceDOWN + defenceUP;
 
 
         // Resistances
@@ -92,12 +91,12 @@ public class DamageObject {
 
         double attackResUP = def_plus_elementalRES * (attackResBuff) / 100;
         double attackResDOWN = def_plus_elementalRES * (attackResDown) / 100;
-        double attack_attribute_Res_applied = def_plus_elementalRES + attackResUP + attackResDOWN;
+        double attack_attribute_Res_applied = def_plus_elementalRES + attackResUP - attackResDOWN;
 
         // Variante 2
         double attackResUP2 = def_AND_down * (attackResBuff) / 100;
         double attackResDOWN2 = def_AND_down * (attackResDown) / 100;
-        double attackRes_applied2 = def_AND_down + attackResDOWN2 + attackResUP2;
+        double attackRes_applied2 = def_AND_down - attackResDOWN2 + attackResUP2;
 
         double attributeResUP2 = attackRes_applied2 * (attributeResBuff) / 100;
         double attributeResDOWN2 = attackRes_applied2 * (attributeResDown) / 100;
@@ -148,18 +147,16 @@ public class DamageObject {
 
         // Protector damage up against weakness attribute
         double ForceElementaldamageMultiplyer = weaknessProtectorBuff / 100; // Frey 60% damage increase for WoF to fire enemies
-        double damageUP = attributeAdvantageTrue ? attributeAdvantage + attributeAdvantage * ForceElementaldamageMultiplyer : attributeAdvantage;
+        double damageUP = attributeAdvantage + attributeAdvantage * ForceElementaldamageMultiplyer;
 
 
         // Weakpoint
-        double weakpointUP = weakpointBuff / 100;
-        double weakpoint = weakpointTrue ? damageUP + pierce * weakpointUP : damageUP;
+        double weaknessStrikeUP = weaknessStrikeBuff / 100;
+        double weakpoint = weakpointTrue ? damageUP + pierce * weaknessStrikeUP : damageUP;
 
         double checkvalidValue = weakpoint >= 0 ? weakpoint : 1;
 
-        double unit120Damage = unit120 ? (checkvalidValue * 1.2) : checkvalidValue;
-
-        return unit120Damage;
+        return checkvalidValue;
     }
 
 
@@ -173,8 +170,8 @@ public class DamageObject {
         return this;
     }
 
-    public DamageObject setAtk_PT(double atk_PT) {
-        this.atk_PT = atk_PT;
+    public DamageObject setAtk_Initial(double atk_Initial) {
+        this.atk_Initial = atk_Initial;
         return this;
     }
 
@@ -228,8 +225,8 @@ public class DamageObject {
         return this;
     }
 
-    public DamageObject setDef_ene(double def_ene) {
-        this.def_ene = def_ene;
+    public DamageObject setDef_Initial(double def_Initial) {
+        this.def_Initial = def_Initial;
         return this;
     }
 
@@ -283,8 +280,8 @@ public class DamageObject {
         return this;
     }
 
-    public DamageObject setWeakpointBuff(double weakpointBuff) {
-        this.weakpointBuff = weakpointBuff;
+    public DamageObject setWeaknessStrikeBuff(double weaknessStrikeBuff) {
+        this.weaknessStrikeBuff = weaknessStrikeBuff;
         return this;
     }
 
@@ -328,11 +325,6 @@ public class DamageObject {
         return this;
     }
 
-    public DamageObject setUnit120True(boolean unit120) {
-        this.unit120 = unit120;
-        return this;
-    }
-
     public double getAtk_Debuff() {
         return atk_Debuff;
     }
@@ -341,8 +333,8 @@ public class DamageObject {
         return atk_Buff;
     }
 
-    public double getAtk_PT() {
-        return atk_PT;
+    public double getAtk_Initial() {
+        return atk_Initial;
     }
 
     public double getElementalATKBuff() {
@@ -385,8 +377,8 @@ public class DamageObject {
         return attackResDown;
     }
 
-    public double getDef_ene() {
-        return def_ene;
+    public double getDef_Initial() {
+        return def_Initial;
     }
 
     public double getDef_up() {
@@ -429,8 +421,8 @@ public class DamageObject {
         return weaknessProtectorBuff;
     }
 
-    public double getWeakpointBuff() {
-        return weakpointBuff;
+    public double getWeaknessStrikeBuff() {
+        return weaknessStrikeBuff;
     }
 
     public boolean isStunTrue() {
@@ -463,10 +455,6 @@ public class DamageObject {
 
     public boolean isSynergyTrue() {
         return synergyTrue;
-    }
-
-    public boolean isUnit120() {
-        return unit120;
     }
 }
 

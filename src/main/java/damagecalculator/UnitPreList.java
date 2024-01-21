@@ -36,7 +36,7 @@ public enum UnitPreList {
             )),
 
     BLANC_VOC(new Unit("Blanc VoC", new DamageObject()
-            .setWeakpointBuff(100)
+            .setWeaknessStrikeBuff(100)
             .setWeakpointTrue(true)
             )),
 

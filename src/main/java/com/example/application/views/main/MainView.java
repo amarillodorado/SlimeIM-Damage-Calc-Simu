@@ -113,27 +113,26 @@ public class MainView extends VerticalLayout {
                     "Elemental ATK Buff",
                     "Elemental ATK Debuff",
 
+                    // Magie/Physik-Schäden
+                    "Magic / Physical Buff",
+                    "Magic / Physical Debuff",
+
                     // Synergie-bezogene Werte
                     "Synergy Active",
                     "Synergy Up Down",
                     "Synergy Partner ATK",
 
-                    // Magie/Physik-Schäden
-                    "Magic Physical Buff",
-                    "Magic Physical Debuff",
 
-                    /*
                     // Resistenz-bezogene Werte
                     "Attribute Res Buff",
                     "Attribute Res Down",
-                    "Attack Res Buff",
-                    "Attack Res Down",
-                     */
+                    "Magic / Physical Res Buff",
+                    "Magic / Physical Res Debuff",
+
 
                     // Verteidigung-bezogene Werte
                     "Defence Enemy",
-                    "Defence UP",
-                    "Defence DOWN",
+                    "Defence Buff / Debuff",
 
                     // Spezielle Angriffsarten
                     "Stun Active",
@@ -141,7 +140,7 @@ public class MainView extends VerticalLayout {
                     "Enamor Active",
                     "Enamor Strike Buff",
                     "Critical Active",
-                    "Crit Buff AND Debuff",
+                    "Crit Buff / Debuff",
 
                     // Spezielle Fähigkeiten
                     "Secret Skill Active",
@@ -151,7 +150,7 @@ public class MainView extends VerticalLayout {
 
                     // Durchdringung und Schwachpunkte
                     "Pierce Active",
-                    "Pierce UP Res Down",
+                    "Pierce Power Buff / Debuff",
                     "Weakpoint Active",
                     "Weakpoint Buff",
 
@@ -168,6 +167,14 @@ public class MainView extends VerticalLayout {
                 DamageTypeValue damageTypeValue = new DamageTypeValue(damageType);
                 for (Unit unit : unitSelected) {
                     Object value = getDamageValueByType(unit.getDamageObject(), damageType);
+                    if (value instanceof Integer){
+                        int tempValue = (int) value;
+                        value = tempValue == 0 ? "" : value;
+                    }
+                    if (value instanceof Boolean){
+                        boolean tempValue = (boolean) value;
+                        value = tempValue ? value : "";
+                    }
                     damageTypeValue.addUnitValue(unit.getName(), value);
                 }
                 damageTypeValues.add(damageTypeValue);
@@ -177,6 +184,7 @@ public class MainView extends VerticalLayout {
             Grid<DamageTypeValue> damageGrid = new Grid<>();
             damageGrid.setItems(damageTypeValues);
             damageGrid.setSizeFull();
+
 
             // Fügen Sie eine Spalte für den Schadens-Typ hinzu
             damageGrid.addColumn(DamageTypeValue::getDamageType).setHeader("Damage Type").setAutoWidth(true);
@@ -257,7 +265,11 @@ public class MainView extends VerticalLayout {
             simulationResultsGrid.setItems(results);
         });
 
+
+
+
         layout_simulator_v.add(layout_simulateButton_addUnit_h,numberOfCombination,preUnits,noUnitsHint,selectedUnitsGrid,showDamageInput);
+        layout_simulator_v.setSpacing(false);
         simulateDamageAccordion.add("Simulator",layout_simulator_v);
 
         updateSelectedUnitsDisplay();
@@ -285,7 +297,7 @@ public class MainView extends VerticalLayout {
                 return damageObject.isPierceTrue();
             case "Weakpoint Active":
                 return damageObject.isWeakpointTrue();
-            // ... Fügen Sie hier zusätzliche Fälle hinzu für andere Checkboxen
+
 
             // Numerische Werte werden als Integer zurückgegeben
             case "ATK Debuff":
@@ -293,7 +305,7 @@ public class MainView extends VerticalLayout {
             case "ATK Buff":
                 return (int)damageObject.getAtk_Buff();
             case "ATK PT":
-                return (int)damageObject.getAtk_PT();
+                return (int)damageObject.getAtk_Initial();
             case "Elemental ATK Buff":
                 return (int)damageObject.getElementalATKBuff();
             case "Elemental ATK Debuff":
@@ -302,29 +314,27 @@ public class MainView extends VerticalLayout {
                 return (int)damageObject.getSynergyUpDown();
             case "Synergy Partner ATK":
                 return (int)damageObject.getSynergyPartnerATK();
-            case "Magic Physical Buff":
+            case "Magic / Physical Buff":
                 return (int)damageObject.getMagicPhysicalBuff();
-            case "Magic Physical Debuff":
+            case "Magic / Physical Debuff":
                 return (int)damageObject.getMagicPhysicalDebuff();
             case "Attribute Res Buff":
                 return (int)damageObject.getAttributeResBuff();
             case "Attribute Res Down":
                 return (int)damageObject.getAttributeResDown();
-            case "Attack Res Buff":
+            case "Magic / Physical Res Buff":
                 return (int)damageObject.getAttackResBuff();
-            case "Attack Res Down":
+            case "Magic / Physical Res Debuff":
                 return (int)damageObject.getAttackResDown();
             case "Defence Enemy":
-                return (int)damageObject.getDef_ene();
-            case "Defence UP":
+                return (int)damageObject.getDef_Initial();
+            case "Defence Buff / Debuff":
                 return (int)damageObject.getDef_up();
-            case "Defence DOWN":
-                return (int)damageObject.getDef_down();
             case "Stun Strike Damage UPDOWN":
                 return (int)damageObject.getStunStrikeDamageUPDOWN();
             case "Enamor Strike Buff":
                 return (int)damageObject.getEnamorStrikeBuff();
-            case "Crit Buff AND Debuff":
+            case "Crit Buff / Debuff":
                 return (int)damageObject.getCritBuffANDDebuff();
             case "Secret Skill from Character":
                 return (int)damageObject.getSecretSkillfromCharacter();
@@ -332,13 +342,12 @@ public class MainView extends VerticalLayout {
                 return (int)damageObject.getSecretSkillBuff();
             case "Secret Damage Res Down":
                 return (int)damageObject.getSecretDamageResistanceDown();
-            case "Pierce UP Res Down":
+            case "Pierce Power Buff / Debuff":
                 return (int)damageObject.getPierceUPResDown();
             case "Weakness Protector Buff":
                 return (int)damageObject.getWeaknessProtectorBuff();
             case "Weakpoint Buff":
-                return (int)damageObject.getWeakpointBuff();
-            // ... Fügen Sie hier weitere Fälle hinzu, falls Sie weitere Schadensattribute haben
+                return (int)damageObject.getWeaknessStrikeBuff();
             default:
                 return 0;
         }

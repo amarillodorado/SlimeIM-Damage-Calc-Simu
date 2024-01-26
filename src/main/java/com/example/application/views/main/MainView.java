@@ -2,30 +2,33 @@ package com.example.application.views.main;
 
 import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.shared.Tooltip;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.StreamResource;
 import damagecalculator.*;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 @PageTitle("Calc / Simu")
 @Route(value = "")
-public class MainView extends VerticalLayout {
+public class MainView extends VerticalLayout implements GuiHandler {
     Grid<DamageResult> simulationResultsGrid = new Grid<>(DamageResult.class, false);
 
     private List<Unit> unitSelected = new ArrayList<>();
@@ -46,9 +49,28 @@ public class MainView extends VerticalLayout {
         top.setAlignItems(Alignment.CENTER);
         top.setJustifyContentMode(JustifyContentMode.CENTER);
 
-        Span heading = new Span("Slime Isekai Memories Damage Calculator & Simulator Beta 2.0");
+        Span heading = new Span("Slime Isekai Memories Damage Calculator & Simulator Beta 3.0");
         heading.getStyle().set("font-weight", "bold");
-        top.add(heading);
+
+        Button infoButton = new Button(new Icon(VaadinIcon.INFO));
+        infoButton.addClickListener(event -> {
+            Dialog newDialog = new Dialog();
+            VerticalLayout layout_main = new VerticalLayout();
+            VerticalLayout layout_infoText = new VerticalLayout();
+            VerticalLayout layout_guide = new VerticalLayout();
+            Span infoText = new Span("Thanks to @shimizawa on youtube for providing the base formula.");
+            Span infoText2 = new Span("For suggestions or bug reports contact @amarillodorado (@Aurora) on discord.");
+            Span guideText = new Span("For a small showcase click the following link");
+            Span guideText2 = new Span("Coming soon!");
+
+            layout_infoText.add(infoText,infoText2);
+            layout_guide.add(guideText, guideText2);
+            layout_main.add(layout_infoText, layout_guide);
+            newDialog.add(layout_main);
+            newDialog.open();
+        });
+
+        top.add(heading, infoButton);
 
         HorizontalLayout bot = new HorizontalLayout();
         bot.setSizeFull();
@@ -59,7 +81,7 @@ public class MainView extends VerticalLayout {
         VerticalLayout mid_bot = new VerticalLayout();
         mid_bot.setSizeFull();
 
-        DamageInput damageInputBase = new DamageInput();
+        DamageInput damageInputBase = new DamageInput(this);
         left_bot.add(new Span("Your static damage dealing Unit"));
         damageInputBase.initializeDamageDialog(left_bot);
         Button calcDamage = new Button("Calculate Damage");
@@ -212,7 +234,7 @@ public class MainView extends VerticalLayout {
             layout_name_v.add(name);
 
             // Erstellen Sie ein neues DamageInput-Objekt für den Dialog
-            DamageInput newDamageInput = new DamageInput();
+            DamageInput newDamageInput = new DamageInput(this);
             newDamageInput.initializeDamageDialog(layout_DamageDialog_v);
 
             layout_createUnit_v.add(createUnitDialog);
@@ -237,6 +259,31 @@ public class MainView extends VerticalLayout {
                 updateSelectedUnitsDisplay();
             }
         });
+
+        preUnits.setItemLabelGenerator(item -> {
+            Unit unit = UnitPreList.valueOf(item).getUnit();
+            return unit.getName(); // oder jede andere gewünschte Textdarstellung
+        });
+
+// Benutzerdefinierter Renderer für die ComboBox
+        preUnits.setRenderer(new ComponentRenderer<>(item -> {
+            HorizontalLayout layout = new HorizontalLayout();
+            layout.setAlignItems(FlexComponent.Alignment.CENTER);
+
+            // Bild hinzufügen
+            String imagePath = UnitPreList.valueOf(item).getImagePath();
+            Image image = new Image(imagePath, item);
+            image.setHeight("30px"); // Bildgröße anpassen
+            layout.add(image);
+
+            // Text hinzufügen
+            Span text = new Span(UnitPreList.valueOf(item).getUnit().getName());
+            layout.add(text);
+
+            return layout;
+        }));
+
+
         selectedUnitsGrid.setAllRowsVisible(true);
         selectedUnitsGrid.setItems(unitSelected);
         selectedUnitsGrid.setColumns("name");
@@ -252,10 +299,12 @@ public class MainView extends VerticalLayout {
                 updateSelectedUnitsDisplay();
             });
             Button editButton = new Button(new Icon(VaadinIcon.PENCIL));
+            editButton.addClickListener(e ->{
+                openEditDialog(unit);
+            });
             temp.add(editButton,deleteButton);
             return temp;
         }).setFlexGrow(0).setWidth("120px");
-
 
 
         simulateDamage.addClickListener(event->{
@@ -264,9 +313,6 @@ public class MainView extends VerticalLayout {
             List<DamageResult> results = simulator.results;
             simulationResultsGrid.setItems(results);
         });
-
-
-
 
         layout_simulator_v.add(layout_simulateButton_addUnit_h,numberOfCombination,preUnits,noUnitsHint,selectedUnitsGrid,showDamageInput);
         layout_simulator_v.setSpacing(false);
@@ -278,6 +324,35 @@ public class MainView extends VerticalLayout {
         bot.add(left_bot,mid_bot,right_bot);
         add(top,bot);
 
+    }
+
+    private void openEditDialog(Unit unitToEdit) {
+        Dialog editDialog = new Dialog();
+        VerticalLayout layout = new VerticalLayout();
+        VerticalLayout fields = new VerticalLayout();
+
+        TextField nameField = new TextField("Name");
+        nameField.setValue(unitToEdit.getName());
+
+        DamageInput damageInput = new DamageInput(this);
+        damageInput.initializeDamageDialog(fields);
+        damageInput.setValuesFromDamageObject(unitToEdit.getDamageObject());
+
+
+        Button saveButton = new Button("Save");
+        saveButton.addClickListener(event ->{
+            unitToEdit.setName(nameField.getValue());
+            DamageObject updatedDamageObject = damageInput.createObject();
+            unitToEdit.setDamageObject(updatedDamageObject);
+
+            updateSelectedUnitsDisplay();
+            editDialog.close();
+        });
+
+
+        layout.add(nameField, fields, saveButton);
+        editDialog.add(layout);
+        editDialog.open();
     }
 
     private Object getDamageValueByType(DamageObject damageObject, String damageType) {
@@ -381,16 +456,8 @@ public class MainView extends VerticalLayout {
 
     }
 
-    private void addToolTip(IntegerField component, String text){
-        Button button = new Button(new Icon(VaadinIcon.INFO_CIRCLE));
-        button.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE,
-                ButtonVariant.LUMO_ICON);
-        component.setSuffixComponent(button);
-        component.setTooltipText(text);
-        Tooltip tooltip = component.getTooltip().withManual(true);
-        button.addClickListener(event -> {
-            tooltip.setOpened(!tooltip.isOpened());
-        });
-    }
+    public void exceptionObjectCreationPopUp(){
+        Notification.show("Make sure all fields have a value!");
+    };
 
 }

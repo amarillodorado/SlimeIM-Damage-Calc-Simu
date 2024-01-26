@@ -17,4 +17,12 @@ public class Unit{
     public DamageObject getDamageObject() {
         return damageObject;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDamageObject(DamageObject damageObject) {
+        this.damageObject = damageObject;
+    }
 }

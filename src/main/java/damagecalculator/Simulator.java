@@ -14,20 +14,24 @@ public class Simulator {
     public static void main(String[] args) {
         Simulator simulator = new Simulator();
         simulator.damageObject = new DamageObject()
-                .setAtk_Initial(13352)
-                        .setSynergyPartnerATK(6097)
-                .setAtk_Buff(66)
-                                .setAttackResDown(20)
-                                        .setMagicPhysicalBuff(65)
-                                                        .setWeaknessProtectorBuff(60)
-                .setWeakpointTrue(true)
-                .setWeaknessStrikeBuff(60)
-                                                                .setDef_Initial(11752)
-                                                                        .setSynergyTrue(true)
-                                                                                .setCritTrue(true)
-                                                                                        .setSecretSkillfromCharacter(765)
-                                                                                                .setSecretSkillTrue(true)
-                .setAttributeAdvantageTrue(true);
+                .setAtk_Initial(12532)
+                        .setAtk_Buff(60)
+                                .setElementalATKBuff(5)
+                                        .setMagicPhysicalBuff(5)
+                                                .setCritTrue(true)
+                                                        .setSynergyTrue(true)
+                                                                .setSynergyPartnerATK(6044)
+                                                                        .setAttributeAdvantageTrue(true)
+                                                                                .setWeaknessProtectorBuff(60)
+                                                                                        .setWeakpointTrue(true)
+                                                                                                .setWeaknessStrikeBuff(60)
+                                                                                                        .setSecretSkillTrue(true)
+                                                                                                                .setSecretSkillfromCharacter(510)
+                                                                                                                        .setSecretSkillBuff(50)
+                                                                                                                                .setDef_Initial(11427)
+                                                                                                                                        .setAttributeResDown(50);
+
+
 
 
 

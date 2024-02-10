@@ -123,7 +123,7 @@ public class DamageObject {
 
 
         // Secret Skill UP
-        double secretSkillUltCharacterUP = critDamage * (1+secretSkillfromCharacter / 100);
+        double secretSkillUltCharacterUP = critDamage * (secretSkillfromCharacter / 100);
         double secretSkillUltSkillUP = secretSkillBuff;
         double secretSkillUltDamage = secretSkillTrue ? secretSkillUltCharacterUP + secretSkillUltCharacterUP * secretSkillUltSkillUP / 100 : critDamage;
 

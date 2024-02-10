@@ -49,26 +49,27 @@ public class DamageObject {
 
     public double calculateDamage() {
         // ATK Buff
-        double synergyATK = synergyPartnerATK * 0.5 * (1+(synergyUpDown / 100));
-        atk_Initial = synergyTrue ? atk_Initial + synergyATK : atk_Initial;
         double atk_plus_buffATK = atk_Initial * (atk_Buff) / 100;
         double atk_plus_debuffATK = atk_Initial * (atk_Debuff) / 100;
         double ATKBuffs_applied = atk_Initial + atk_plus_buffATK - atk_plus_debuffATK;
 
+        double synergyATK = synergyPartnerATK * 0.4;
+        double synergyDamage = (ATKBuffs_applied + synergyATK) * (1+synergyUpDown/100);
+
 
         // Variante 1 Magic/Physical/Attribute ATK
-        double atkBuffs_plus_elementalATKBuff = ATKBuffs_applied * (elementalATKBuff) / 100;
-        double atkBuffs_plus_elementalATKdebuff = ATKBuffs_applied * (elementalATKDebuff) / 100;
-        double ElementalBuffs_applied = ATKBuffs_applied - atkBuffs_plus_elementalATKdebuff + atkBuffs_plus_elementalATKBuff;
+        double atkBuffs_plus_elementalATKBuff = synergyDamage * (elementalATKBuff) / 100;
+        double atkBuffs_plus_elementalATKdebuff = synergyDamage * (elementalATKDebuff) / 100;
+        double ElementalBuffs_applied = synergyDamage - atkBuffs_plus_elementalATKdebuff + atkBuffs_plus_elementalATKBuff;
 
         double atkBuff_elemental_Buff_MaPhyBuff = ElementalBuffs_applied * (MagicPhysicalBuff) / 100;
         double atkBuff_elemental_Buff_MaPhyDebuff = ElementalBuffs_applied * (MagicPhysicalDebuff) / 100;
         double physicalmagiBuffs_applied = ElementalBuffs_applied + atkBuff_elemental_Buff_MaPhyBuff - atkBuff_elemental_Buff_MaPhyDebuff;
 
         // Variante 2
-        double atkBuff_elemental_Buff_MaPhyBuff_basedATKBuff = ATKBuffs_applied * (MagicPhysicalBuff) / 100;
-        double atkBuff_elemental_Buff_MaPhyDebuff_basedATKBuff = ATKBuffs_applied * (MagicPhysicalDebuff) / 100;
-        double physicalmagiBuffs_applied_baseATKBuff = ATKBuffs_applied - atkBuff_elemental_Buff_MaPhyDebuff_basedATKBuff + atkBuff_elemental_Buff_MaPhyBuff_basedATKBuff;
+        double atkBuff_elemental_Buff_MaPhyBuff_basedATKBuff = synergyDamage * (MagicPhysicalBuff) / 100;
+        double atkBuff_elemental_Buff_MaPhyDebuff_basedATKBuff = synergyDamage * (MagicPhysicalDebuff) / 100;
+        double physicalmagiBuffs_applied_baseATKBuff = synergyDamage - atkBuff_elemental_Buff_MaPhyDebuff_basedATKBuff + atkBuff_elemental_Buff_MaPhyBuff_basedATKBuff;
 
         double attributeATKPowerUP2 = physicalmagiBuffs_applied_baseATKBuff * (elementalATKBuff) / 100;
         double attributeATKPowerDOWN2 = physicalmagiBuffs_applied_baseATKBuff * (elementalATKDebuff) / 100;
@@ -136,7 +137,7 @@ public class DamageObject {
 
 
         // Penetration damage
-        double pierceDamage = damage1 + ATKBuffs_applied * 6 / 100;
+        double pierceDamage = damage1 + synergyDamage * 6 / 100;
         double pierceUP = pierceUPResDown;
         double pierce = pierceTrue ? pierceDamage + pierceDamage * pierceUP / 100 : damage1;
 

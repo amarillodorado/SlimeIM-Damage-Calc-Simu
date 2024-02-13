@@ -97,9 +97,6 @@ public class MainView extends VerticalLayout implements GuiHandler {
 
         Button addUnit = new Button("Add Unit");
 
-        TextField name = new TextField("Name");
-
-
         ComboBox<String> preUnits = new ComboBox<>();
         preUnits.setLabel("Default Configured Units");
         IntegerField numberOfCombination = new IntegerField("Pairing Size");
@@ -229,6 +226,7 @@ public class MainView extends VerticalLayout implements GuiHandler {
             VerticalLayout layout_DamageDialog_v = new VerticalLayout();
             VerticalLayout layout_createUnit_v = new VerticalLayout();
             Button createUnitDialog = new Button("Create Unit");
+            TextField name = new TextField("Name");
 
             layout_name_v.setPadding(false);
             layout_name_v.add(name);

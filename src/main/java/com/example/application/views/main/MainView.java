@@ -103,10 +103,14 @@ public class MainView extends VerticalLayout implements GuiHandler {
         numberOfCombination.setValue(1);
         numberOfCombination.setMin(1);
         addToolTip(numberOfCombination,"e.g. 3 means it combines 3 units from the list until all combinations are done");
-        numberOfCombination.setMin(0);
         VerticalLayout layout_simulator_v = new VerticalLayout();
         layout_simulateButton_addUnit_h.add(simulateDamage,addUnit);
         layout_simulateButton_addUnit_h.setPadding(false);
+
+        IntegerField maxSkillpointsBoundary = new IntegerField("Available Skillpoints");
+        addToolTip(maxSkillpointsBoundary, "If a combination (skillcosts) exceeds this amount, the Damage will not be calculated for this combination. If the skillcost doesn't matter and you want all combinations leave it at 0!");
+        maxSkillpointsBoundary.setMin(0);
+        maxSkillpointsBoundary.setValue(0);
 
         noUnitsHint = new Div();
         noUnitsHint.setText("No units selected");
@@ -123,6 +127,7 @@ public class MainView extends VerticalLayout implements GuiHandler {
 
             // Die Namen der Schadensarten
             String[] damageTypes = new String[] {
+                    "Skillcost",
                     // ATK-bezogene Werte
                     "ATK PT",
                     "ATK Buff",
@@ -185,7 +190,7 @@ public class MainView extends VerticalLayout implements GuiHandler {
             for (String damageType : damageTypes) {
                 DamageTypeValue damageTypeValue = new DamageTypeValue(damageType);
                 for (Unit unit : unitSelected) {
-                    Object value = getDamageValueByType(unit.getDamageObject(), damageType);
+                    Object value = getDamageValueByType(unit, damageType);
                     if (value instanceof Integer){
                         int tempValue = (int) value;
                         value = tempValue == 0 ? "" : value;
@@ -223,23 +228,29 @@ public class MainView extends VerticalLayout implements GuiHandler {
             // Erstellen Sie jedes Mal einen neuen Dialog, wenn der Button geklickt wird
             Dialog addUnitDialog = new Dialog();
             VerticalLayout layout_name_v = new VerticalLayout();
+            VerticalLayout layout_skillcost_v = new VerticalLayout();
             VerticalLayout layout_DamageDialog_v = new VerticalLayout();
             VerticalLayout layout_createUnit_v = new VerticalLayout();
             Button createUnitDialog = new Button("Create Unit");
             TextField name = new TextField("Name");
+            IntegerField skillCost = new IntegerField("Skillcost");
 
             layout_name_v.setPadding(false);
+            layout_name_v.setSpacing(false);
             layout_name_v.add(name);
+            layout_skillcost_v.setSpacing(false);
+            layout_skillcost_v.setPadding(false);
+            layout_skillcost_v.add(skillCost);
 
             // Erstellen Sie ein neues DamageInput-Objekt für den Dialog
             DamageInput newDamageInput = new DamageInput(this);
             newDamageInput.initializeDamageDialog(layout_DamageDialog_v);
 
             layout_createUnit_v.add(createUnitDialog);
-            addUnitDialog.add(layout_name_v, layout_DamageDialog_v, layout_createUnit_v);
+            addUnitDialog.add(layout_name_v, layout_skillcost_v, layout_DamageDialog_v, layout_createUnit_v);
 
             createUnitDialog.addClickListener(createEvent -> {
-                Unit createdUnit = new Unit(name.getValue(), newDamageInput.createObject());
+                Unit createdUnit = new Unit(name.getValue(), skillCost.getValue(), newDamageInput.createObject());
                 addUnitIfNotPresent(createdUnit);
                 updateSelectedUnitsDisplay();
                 addUnitDialog.close();
@@ -307,12 +318,13 @@ public class MainView extends VerticalLayout implements GuiHandler {
 
         simulateDamage.addClickListener(event->{
             simulator.setDamageObject(damageInputBase.createObject());
+            simulator.setMaxSkillCost(maxSkillpointsBoundary.getValue());
             simulator.combinationHandler(unitSelected,numberOfCombination.getValue());
             List<DamageResult> results = simulator.results;
             simulationResultsGrid.setItems(results);
         });
 
-        layout_simulator_v.add(layout_simulateButton_addUnit_h,numberOfCombination,preUnits,noUnitsHint,selectedUnitsGrid,showDamageInput);
+        layout_simulator_v.add(layout_simulateButton_addUnit_h,numberOfCombination, maxSkillpointsBoundary,preUnits,noUnitsHint,selectedUnitsGrid,showDamageInput);
         layout_simulator_v.setSpacing(false);
         simulateDamageAccordion.add("Simulator",layout_simulator_v);
 
@@ -331,6 +343,8 @@ public class MainView extends VerticalLayout implements GuiHandler {
 
         TextField nameField = new TextField("Name");
         nameField.setValue(unitToEdit.getName());
+        IntegerField skillCost = new IntegerField("Skillcost");
+        skillCost.setValue(unitToEdit.getSkillcost());
 
         DamageInput damageInput = new DamageInput(this);
         damageInput.initializeDamageDialog(fields);
@@ -340,6 +354,7 @@ public class MainView extends VerticalLayout implements GuiHandler {
         Button saveButton = new Button("Save");
         saveButton.addClickListener(event ->{
             unitToEdit.setName(nameField.getValue());
+            unitToEdit.setSkillcost(skillCost.getValue());
             DamageObject updatedDamageObject = damageInput.createObject();
             unitToEdit.setDamageObject(updatedDamageObject);
 
@@ -348,13 +363,16 @@ public class MainView extends VerticalLayout implements GuiHandler {
         });
 
 
-        layout.add(nameField, fields, saveButton);
+        layout.add(nameField, skillCost, fields, saveButton);
         editDialog.add(layout);
         editDialog.open();
     }
 
-    private Object getDamageValueByType(DamageObject damageObject, String damageType) {
+    private Object getDamageValueByType(Unit unit, String damageType) {
+        DamageObject damageObject = unit.getDamageObject();
         switch (damageType) {
+            case "Skillcost":
+                return unit.getSkillcost();
             // Boolesche Werte werden direkt zurückgegeben
             case "Synergy Active":
                 return damageObject.isSynergyTrue();

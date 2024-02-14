@@ -50,6 +50,10 @@ public class DamageInput implements GuiHandler{
     IntegerField def_down_IntegerField;
     Checkbox attributeAdvantageTrue_Checkbox;
 
+    IntegerField critResDown;
+    IntegerField pierceResDown_IntegerField;
+    IntegerField synergyResDown_IntegerField;
+
     public void initializeDamageDialog(VerticalLayout layout) {
         //ATK
         VerticalLayout layout_atk_v = new VerticalLayout();
@@ -97,29 +101,42 @@ public class DamageInput implements GuiHandler{
         VerticalLayout layout_crit_v = new VerticalLayout();
         critTrue_Checkbox = new Checkbox("Critical");
         critBuffANDDebuff_IntegerField = new IntegerField("Critical Damage Buff / Debuff");
+        critResDown = new IntegerField("Crit Res down");
         critBuffANDDebuff_IntegerField.setVisible(false);
-        layout_crit_v.add(critTrue_Checkbox,critBuffANDDebuff_IntegerField);
-        critTrue_Checkbox.addValueChangeListener(event -> critBuffANDDebuff_IntegerField.setVisible(event.getValue()));
+        critResDown.setVisible(false);
+        layout_crit_v.add(critTrue_Checkbox,critBuffANDDebuff_IntegerField, critResDown);
+        critTrue_Checkbox.addValueChangeListener(event -> {
+            critBuffANDDebuff_IntegerField.setVisible(event.getValue());
+            critResDown.setVisible(event.getValue());
+        });
 
         VerticalLayout layout_pierce_v = new VerticalLayout();
         pierceTrue_Checkbox = new Checkbox("Pierce");
         pierceUPResDown_IntegerField = new IntegerField("Pierce Power Buff / Debuff");
+        pierceResDown_IntegerField = new IntegerField("Pierce Res down");
         pierceUPResDown_IntegerField.setVisible(false);
-        layout_pierce_v.add(pierceTrue_Checkbox, pierceUPResDown_IntegerField);
-        pierceTrue_Checkbox.addValueChangeListener(event-> pierceUPResDown_IntegerField.setVisible(event.getValue()));
+        pierceResDown_IntegerField.setVisible(false);
+        layout_pierce_v.add(pierceTrue_Checkbox, pierceUPResDown_IntegerField, pierceResDown_IntegerField);
+        pierceTrue_Checkbox.addValueChangeListener(event-> {
+            pierceUPResDown_IntegerField.setVisible(event.getValue());
+            pierceResDown_IntegerField.setVisible(event.getValue());
+        });
 
         //Synergy
         VerticalLayout layout_synergy_v = new VerticalLayout();
         synergyUpDown_IntegerField = new IntegerField("Synergy Buff / Debuff");
+        synergyResDown_IntegerField = new IntegerField("Synergy Res down");
         synergyPartnerATK_IntegerField = new IntegerField("Synergy Partner ATK");
         synergyTrue_Checkbox = new Checkbox("Synergy");
         synergyPartnerATK_IntegerField.setVisible(false);
         synergyUpDown_IntegerField.setVisible(false);
-        layout_synergy_v.add(synergyTrue_Checkbox,synergyPartnerATK_IntegerField,synergyUpDown_IntegerField);
+        synergyResDown_IntegerField.setVisible(false);
+        layout_synergy_v.add(synergyTrue_Checkbox,synergyPartnerATK_IntegerField,synergyUpDown_IntegerField, synergyResDown_IntegerField);
         synergyTrue_Checkbox.addValueChangeListener(event -> {
             boolean isChecked = event.getValue();
             synergyPartnerATK_IntegerField.setVisible(isChecked);
             synergyUpDown_IntegerField.setVisible(isChecked);
+            synergyResDown_IntegerField.setVisible(isChecked);
         });
         layout_crit_pierce_synergy_v.add(layout_crit_v,layout_pierce_v,layout_synergy_v);
         accordion_crit_pierce_synergy.add("Critical & Pierce & Synergy Damage",layout_crit_pierce_synergy_v);
@@ -227,15 +244,18 @@ public class DamageInput implements GuiHandler{
         atk_PT_IntegerField.setValue(0); 
 
         synergyUpDown_IntegerField.setValue(0); 
-        synergyPartnerATK_IntegerField.setValue(0); 
+        synergyPartnerATK_IntegerField.setValue(0);
+        synergyResDown_IntegerField.setValue(0);
 
         stundStrikeMulti_IntegerField.setValue(0); 
 
         enamorStrikeBuff_IntegerField.setValue(0); 
 
-        critBuffANDDebuff_IntegerField.setValue(0); 
+        critBuffANDDebuff_IntegerField.setValue(0);
+        critResDown.setValue(0);
 
-        pierceUPResDown_IntegerField.setValue(0); 
+        pierceUPResDown_IntegerField.setValue(0);
+        pierceResDown_IntegerField.setValue(0);
 
         weaknessProtectorBuff_IntegerField.setValue(0); 
         weaknessStrikeBuff_IntegerField.setValue(0);
@@ -267,14 +287,17 @@ public class DamageInput implements GuiHandler{
 
         synergyUpDown_IntegerField.setMin(0);
         synergyPartnerATK_IntegerField.setMin(0);
+        synergyResDown_IntegerField.setMin(0);
 
         stundStrikeMulti_IntegerField.setMin(0);
 
         enamorStrikeBuff_IntegerField.setMin(0);
 
         critBuffANDDebuff_IntegerField.setMin(0);
+        critResDown.setMin(0);
 
         pierceUPResDown_IntegerField.setMin(0);
+        pierceResDown_IntegerField.setMin(0);
 
         weaknessProtectorBuff_IntegerField.setMin(0);
         weaknessStrikeBuff_IntegerField.setMin(0);
@@ -342,40 +365,40 @@ public class DamageInput implements GuiHandler{
     public DamageObject createObject(){
         DamageObject damageObject = new DamageObject();
         try{
-            damageObject.setAtk_Debuff(atk_Debuff_IntegerField.getValue())
-                    .setAtk_Buff(atk_Buff_IntegerField.getValue())
-                    .setAtk_Initial(atk_PT_IntegerField.getValue())
-                    .setElementalATKBuff(elementalATKBuff_IntegerField.getValue())
-                    .setElementalATKDebuff(elementalATKDebuff_IntegerField.getValue())
-                    .setSynergyUpDown(synergyUpDown_IntegerField.getValue())
-                    .setSynergyPartnerATK(synergyPartnerATK_IntegerField.getValue())
-                    .setMagicPhysicalBuff(magicPhysicalBuff_IntegerField.getValue())
-                    .setMagicPhysicalDebuff(magicPhysicalDebuff_IntegerField.getValue())
-                    .setAttributeResBuff(attributeResBuff_IntegerField.getValue())
-                    .setAttributeResDown(attributeResDown_IntegerField.getValue())
-                    .setAttackResBuff(attackResBuff_IntegerField.getValue())
-                    .setAttackResDown(attackResDown_IntegerField.getValue())
-                    .setDef_Initial(def_ene_IntegerField.getValue())
-                    .setDef_up(def_up_IntegerField.getValue())
-                    .setDef_down(def_down_IntegerField.getValue())
-                    .setStunStrikeDamageUPDOWN(stundStrikeMulti_IntegerField.getValue())
-                    .setEnamorStrikeBuff(enamorStrikeBuff_IntegerField.getValue())
-                    .setCritBuffANDDebuff(critBuffANDDebuff_IntegerField.getValue())
-                    .setSecretSkillfromCharacter(secretSkillfromCharacter_IntegerField.getValue())
-                    .setSecretSkillBuff(secretSkillBuff_IntegerField.getValue())
-                    .setSecretDamageResistanceDown(secretDamageResistanceDown_IntegerField.getValue())
-                    .setPierceUPResDown(pierceUPResDown_IntegerField.getValue())
-                    .setWeaknessProtectorBuff(weaknessProtectorBuff_IntegerField.getValue())
-                    .setWeaknessStrikeBuff(weaknessStrikeBuff_IntegerField.getValue())
-                    // set booleans
-                    .setStunTrue(stunTrue_Checkbox.getValue())
-                    .setEnamorTrue(enamorTrue_Checkbox.getValue())
-                    .setCritTrue(critTrue_Checkbox.getValue())
-                    .setSecretSkillTrue(secretSkillTrue_Checkbox.getValue())
-                    .setPierceTrue(pierceTrue_Checkbox.getValue())
-                    .setAttributeAdvantageTrue(attributeAdvantageTrue_Checkbox.getValue())
-                    .setWeakpointTrue(weakpointTrue_Checkbox.getValue())
-                    .setSynergyTrue(synergyTrue_Checkbox.getValue());
+            damageObject.setAtk_Debuff(atk_Debuff_IntegerField.getValue());
+            damageObject.setAtk_Buff(atk_Buff_IntegerField.getValue());
+            damageObject.setAtk_Initial(atk_PT_IntegerField.getValue());
+            damageObject.setElementalATKBuff(elementalATKBuff_IntegerField.getValue());
+            damageObject.setElementalATKDebuff(elementalATKDebuff_IntegerField.getValue());
+            damageObject.setSynergyUpDown(synergyUpDown_IntegerField.getValue()+synergyResDown_IntegerField.getValue());
+            damageObject.setSynergyPartnerATK(synergyPartnerATK_IntegerField.getValue());
+            damageObject.setMagicPhysicalBuff(magicPhysicalBuff_IntegerField.getValue());
+            damageObject.setMagicPhysicalDebuff(magicPhysicalDebuff_IntegerField.getValue());
+            damageObject.setAttributeResBuff(attributeResBuff_IntegerField.getValue());
+            damageObject.setAttributeResDown(attributeResDown_IntegerField.getValue());
+            damageObject.setAttackResBuff(attackResBuff_IntegerField.getValue());
+            damageObject.setAttackResDown(attackResDown_IntegerField.getValue());
+            damageObject.setDef_Initial(def_ene_IntegerField.getValue());
+            damageObject.setDef_up(def_up_IntegerField.getValue());
+            damageObject.setDef_down(def_down_IntegerField.getValue());
+            damageObject.setStunStrikeDamageUPDOWN(stundStrikeMulti_IntegerField.getValue());
+            damageObject.setEnamorStrikeBuff(enamorStrikeBuff_IntegerField.getValue());
+            damageObject.setCritBuffANDDebuff(critBuffANDDebuff_IntegerField.getValue()+critResDown.getValue());
+            damageObject.setSecretSkillfromCharacter(secretSkillfromCharacter_IntegerField.getValue());
+            damageObject.setSecretSkillBuff(secretSkillBuff_IntegerField.getValue());
+            damageObject.setSecretDamageResistanceDown(secretDamageResistanceDown_IntegerField.getValue());
+            damageObject.setPierceUPResDown(pierceUPResDown_IntegerField.getValue()+pierceResDown_IntegerField.getValue());
+            damageObject.setWeaknessProtectorBuff(weaknessProtectorBuff_IntegerField.getValue());
+            damageObject.setWeaknessStrikeBuff(weaknessStrikeBuff_IntegerField.getValue());
+            //boolean
+            damageObject.setStunTrue(stunTrue_Checkbox.getValue());
+            damageObject.setEnamorTrue(enamorTrue_Checkbox.getValue());
+            damageObject.setCritTrue(critTrue_Checkbox.getValue());
+            damageObject.setSecretSkillTrue(secretSkillTrue_Checkbox.getValue());
+            damageObject.setPierceTrue(pierceTrue_Checkbox.getValue());
+            damageObject.setAttributeAdvantageTrue(attributeAdvantageTrue_Checkbox.getValue());
+            damageObject.setWeakpointTrue(weakpointTrue_Checkbox.getValue());
+            damageObject.setSynergyTrue(synergyTrue_Checkbox.getValue());// set booleans
         }catch (Exception e){
             mainView.exceptionObjectCreationPopUp();
         }

@@ -83,14 +83,20 @@ public class DamageInput implements GuiHandler{
         stundStrikeMulti_IntegerField = new IntegerField("Stun Strike Buff / Debuff");
         stundStrikeMulti_IntegerField.setVisible(false);
         layout_stunStrike_v.add(stunTrue_Checkbox,stundStrikeMulti_IntegerField);
-        stunTrue_Checkbox.addValueChangeListener(event -> stundStrikeMulti_IntegerField.setVisible(event.getValue()));
+        stunTrue_Checkbox.addValueChangeListener(event -> {
+            stundStrikeMulti_IntegerField.setVisible(event.getValue());
+            stundStrikeMulti_IntegerField.setValue(0);
+        });
 
         VerticalLayout layout_charmStrike_v = new VerticalLayout();
         enamorTrue_Checkbox = new Checkbox("Enamor Strike");
         enamorStrikeBuff_IntegerField = new IntegerField("Enamor Strike Buff / Debuff");
         enamorStrikeBuff_IntegerField.setVisible(false);
         layout_charmStrike_v.add(enamorTrue_Checkbox, enamorStrikeBuff_IntegerField);
-        enamorTrue_Checkbox.addValueChangeListener(event -> enamorStrikeBuff_IntegerField.setVisible(event.getValue()));
+        enamorTrue_Checkbox.addValueChangeListener(event -> {
+            enamorStrikeBuff_IntegerField.setVisible(event.getValue());
+            enamorStrikeBuff_IntegerField.setValue(0);
+        });
         layout_accordian_stun_enamor.add(layout_stunStrike_v,layout_charmStrike_v);
         accordion_stun_enamor.add("Enamor & Stun Strike",layout_accordian_stun_enamor);
         accordion_stun_enamor.close();
@@ -108,6 +114,8 @@ public class DamageInput implements GuiHandler{
         critTrue_Checkbox.addValueChangeListener(event -> {
             critBuffANDDebuff_IntegerField.setVisible(event.getValue());
             critResDown.setVisible(event.getValue());
+            critResDown.setValue(0);
+            critBuffANDDebuff_IntegerField.setValue(0);
         });
 
         VerticalLayout layout_pierce_v = new VerticalLayout();
@@ -120,6 +128,8 @@ public class DamageInput implements GuiHandler{
         pierceTrue_Checkbox.addValueChangeListener(event-> {
             pierceUPResDown_IntegerField.setVisible(event.getValue());
             pierceResDown_IntegerField.setVisible(event.getValue());
+            pierceResDown_IntegerField.setValue(0);
+            pierceUPResDown_IntegerField.setValue(0);
         });
 
         //Synergy
@@ -137,6 +147,9 @@ public class DamageInput implements GuiHandler{
             synergyPartnerATK_IntegerField.setVisible(isChecked);
             synergyUpDown_IntegerField.setVisible(isChecked);
             synergyResDown_IntegerField.setVisible(isChecked);
+            synergyResDown_IntegerField.setValue(0);
+            synergyUpDown_IntegerField.setValue(0);
+            synergyPartnerATK_IntegerField.setValue(0);
         });
         layout_crit_pierce_synergy_v.add(layout_crit_v,layout_pierce_v,layout_synergy_v);
         accordion_crit_pierce_synergy.add("Critical & Pierce & Synergy Damage",layout_crit_pierce_synergy_v);
@@ -156,7 +169,10 @@ public class DamageInput implements GuiHandler{
         weaknessStrikeBuff_IntegerField = new IntegerField("Weakness Strike Buff");
         weaknessStrikeBuff_IntegerField.setVisible(false);
         layout_weakness_v.add(weaknessProtectorBuff_IntegerField,weakpointTrue_Checkbox, weaknessStrikeBuff_IntegerField);
-        weakpointTrue_Checkbox.addValueChangeListener(event -> weaknessStrikeBuff_IntegerField.setVisible(event.getValue()));
+        weakpointTrue_Checkbox.addValueChangeListener(event -> {
+            weaknessStrikeBuff_IntegerField.setVisible(event.getValue());
+            weaknessStrikeBuff_IntegerField.setValue(0);
+        });
         layout_weakness_attributeadvantage_v.add(layout_attributeAdvantage_v,layout_weakness_v);
         accordion_weakness_attributeadvantage_v.add("Weakness & Attribute Advantage",layout_weakness_attributeadvantage_v);
         accordion_weakness_attributeadvantage_v.close();
@@ -177,6 +193,9 @@ public class DamageInput implements GuiHandler{
             secretSkillfromCharacter_IntegerField.setVisible(isChecked);
             secretSkillBuff_IntegerField.setVisible(isChecked);
             secretDamageResistanceDown_IntegerField.setVisible(isChecked);
+            secretSkillfromCharacter_IntegerField.setValue(0);
+            secretSkillBuff_IntegerField.setValue(0);
+            secretDamageResistanceDown_IntegerField.setValue(0);
         });
         accordion_secretskill.add("Secret Skill", layout_secretSkill_v);
         accordion_secretskill.close();
@@ -235,7 +254,6 @@ public class DamageInput implements GuiHandler{
                 );
 
     }
-
 
     public void setValue(){
         //Set default value

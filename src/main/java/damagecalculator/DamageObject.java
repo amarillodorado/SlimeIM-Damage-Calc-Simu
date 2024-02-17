@@ -133,13 +133,11 @@ public class DamageObject {
         double secretDamageResDown = secretDamageResistanceDown;//(mysdam_res_up_eizoku + mysdam_res_up_turn) * -1 - mysdam_res_down_kago_sukiru * mysdam_res_down_kago_sukiru_kaisu - mysdam_res_down_sentou_sukiru;
         double secretDamageRes = secretSkillTrue ? secretSkillUltDamage + secretSkillUltDamage * secretDamageResDown / 100 : secretSkillUltDamage;
 
-        double damage1 = secretDamageRes >= 0 ? secretDamageRes : 1;
-
 
         // Penetration damage
-        double pierceDamage = damage1 + synergyDamage * 6 / 100;
+        double pierceDamage = secretDamageRes + synergyDamage * 6 / 100;
         double pierceUP = pierceUPResDown;
-        double pierce = pierceTrue ? pierceDamage + pierceDamage * pierceUP / 100 : damage1;
+        double pierce = pierceTrue ? pierceDamage + pierceDamage * pierceUP / 100 : secretDamageRes;
 
 
         // Attribute Advantage

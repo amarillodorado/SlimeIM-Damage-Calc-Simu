@@ -2,6 +2,7 @@ package damagecalculator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Simulator {
 
@@ -19,10 +20,26 @@ public class Simulator {
 
     public static void main(String[] args) {
         Simulator simulator = new Simulator();
-        simulator.damageObject = new DamageObject().setAtk_Initial(14534).setDef_Initial(726).setPierceTrue(true).setPierceUPResDown(60).setSynergyTrue(true).setSynergyPartnerATK(5694).setSynergyUpDown(40);
+        simulator.damageObject = new DamageObject().setAtk_Initial(24414).setMagicPhysicalBuff(80).setElementalATKBuff(70)
+                .setCritTrue(true)
+                .setAttributeAdvantageTrue(true)
+                .setWeaknessStrikeBuff(240)
+                .setWeakpointTrue(true)
+                .setWeaknessProtectorBuff(60)
+                .setSecretSkillfromCharacter(735)
+                .setSecretSkillTrue(true)
+                .setSecretDamageResistanceDown(155)
+                .setSynergyTrue(true)
+                .setSynergyPartnerATK(6109)
+                .setSynergyUpDown(40)
+                .setDef_Initial(7460)
+                .setAttributeResDown(20);
         System.out.println(simulator.damageObject.calculateDamage());
 
+
+        //System.out.println(synergyDamage + " "+ elementalATKBuff + " " + elementalATKDebuff + " "+ MagicPhysicalDebuff+" "+MagicPhysicalBuff);
     }
+
 
     public void combinationHandler(List<Unit> allUnits, int combinationSize) {
         results = new ArrayList<>();

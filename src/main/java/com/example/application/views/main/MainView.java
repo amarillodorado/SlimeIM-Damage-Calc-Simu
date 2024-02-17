@@ -230,6 +230,8 @@ public class MainView extends VerticalLayout implements GuiHandler {
             VerticalLayout layout_name_v = new VerticalLayout();
             VerticalLayout layout_skillcost_v = new VerticalLayout();
             VerticalLayout layout_DamageDialog_v = new VerticalLayout();
+            layout_DamageDialog_v.setSpacing(false);
+            layout_DamageDialog_v.setPadding(false);
             VerticalLayout layout_createUnit_v = new VerticalLayout();
             Button createUnitDialog = new Button("Create Unit");
             TextField name = new TextField("Name");
@@ -339,7 +341,11 @@ public class MainView extends VerticalLayout implements GuiHandler {
     private void openEditDialog(Unit unitToEdit) {
         Dialog editDialog = new Dialog();
         VerticalLayout layout = new VerticalLayout();
+        layout.setSpacing(false);
+        layout.setPadding(false);
         VerticalLayout fields = new VerticalLayout();
+        fields.setPadding(false);
+        fields.setSpacing(false);
 
         TextField nameField = new TextField("Name");
         nameField.setValue(unitToEdit.getName());

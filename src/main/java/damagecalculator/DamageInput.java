@@ -2,13 +2,8 @@ package damagecalculator;
 
 import com.example.application.views.main.MainView;
 import com.vaadin.flow.component.accordion.Accordion;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
-import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.shared.Tooltip;
 import com.vaadin.flow.component.textfield.IntegerField;
 
 public class DamageInput implements GuiHandler{
@@ -49,38 +44,37 @@ public class DamageInput implements GuiHandler{
     IntegerField def_up_IntegerField;
     IntegerField def_down_IntegerField;
     Checkbox attributeAdvantageTrue_Checkbox;
-
     IntegerField critResDown;
     IntegerField pierceResDown_IntegerField;
     IntegerField synergyResDown_IntegerField;
 
     public void initializeDamageDialog(VerticalLayout layout) {
         //ATK
-        VerticalLayout layout_atk_v = new VerticalLayout();
+        VerticalLayout layout_atk_v = createVerticalLayoutDefaultSpacingPaddingFalse();
         Accordion accordion_atk = new Accordion();
-        atk_Debuff_IntegerField = new IntegerField("ATK Debuff");
-        atk_Buff_IntegerField = new IntegerField("ATK Buff");
-        atk_PT_IntegerField = new IntegerField("ATK Initial");
+        atk_Debuff_IntegerField = createIntegerFieldMinimumValueZero("ATK Debuff");
+        atk_Buff_IntegerField = createIntegerFieldMinimumValueZero("ATK Buff");
+        atk_PT_IntegerField = createIntegerFieldMinimumValueZero("ATK Initial");
         addToolTip(atk_PT_IntegerField, "Select the ATK from the Team Building screen (not in fight ATK)");
         layout_atk_v.add(atk_PT_IntegerField,atk_Buff_IntegerField,atk_Debuff_IntegerField);
         accordion_atk.add("Attack",layout_atk_v);
         accordion_atk.close();
 
         Accordion accordion_TypeAdvantage = new Accordion();
-        VerticalLayout layout_typeAdvantage_v = new VerticalLayout();
-        elementalATKBuff_IntegerField = new IntegerField("Elemental ATK Buff");
-        elementalATKDebuff_IntegerField = new IntegerField("Elemental ATK Debuff");
-        magicPhysicalBuff_IntegerField = new IntegerField("Magic / Physical Buff");
-        magicPhysicalDebuff_IntegerField = new IntegerField("Magic / Physical Debuff");
+        VerticalLayout layout_typeAdvantage_v = createVerticalLayoutDefaultSpacingPaddingFalse();
+        elementalATKBuff_IntegerField = createIntegerFieldMinimumValueZero("Elemental ATK Buff");
+        elementalATKDebuff_IntegerField = createIntegerFieldMinimumValueZero("Elemental ATK Debuff");
+        magicPhysicalBuff_IntegerField = createIntegerFieldMinimumValueZero("Magic / Physical Buff");
+        magicPhysicalDebuff_IntegerField = createIntegerFieldMinimumValueZero("Magic / Physical Debuff");
         layout_typeAdvantage_v.add(elementalATKBuff_IntegerField,elementalATKDebuff_IntegerField,magicPhysicalBuff_IntegerField,magicPhysicalDebuff_IntegerField);
         accordion_TypeAdvantage.add("Magic / Physical & Elemental",layout_typeAdvantage_v);
         accordion_TypeAdvantage.close();
 
         Accordion accordion_stun_enamor = new Accordion();
-        VerticalLayout layout_accordian_stun_enamor = new VerticalLayout();
-        VerticalLayout layout_stunStrike_v = new VerticalLayout();
+        VerticalLayout layout_accordian_stun_enamor = createVerticalLayoutDefaultSpacingPaddingFalse();
+        VerticalLayout layout_stunStrike_v = createVerticalLayoutDefaultSpacingPaddingFalse();
         stunTrue_Checkbox = new Checkbox("Stun Strike");
-        stundStrikeMulti_IntegerField = new IntegerField("Stun Strike Buff / Debuff");
+        stundStrikeMulti_IntegerField = createIntegerFieldMinimumValueZero("Stun Strike Buff / Debuff");
         stundStrikeMulti_IntegerField.setVisible(false);
         layout_stunStrike_v.add(stunTrue_Checkbox,stundStrikeMulti_IntegerField);
         stunTrue_Checkbox.addValueChangeListener(event -> {
@@ -88,9 +82,9 @@ public class DamageInput implements GuiHandler{
             stundStrikeMulti_IntegerField.setValue(0);
         });
 
-        VerticalLayout layout_charmStrike_v = new VerticalLayout();
+        VerticalLayout layout_charmStrike_v = createVerticalLayoutDefaultSpacingPaddingFalse();
         enamorTrue_Checkbox = new Checkbox("Enamor Strike");
-        enamorStrikeBuff_IntegerField = new IntegerField("Enamor Strike Buff / Debuff");
+        enamorStrikeBuff_IntegerField = createIntegerFieldMinimumValueZero("Enamor Strike Buff / Debuff");
         enamorStrikeBuff_IntegerField.setVisible(false);
         layout_charmStrike_v.add(enamorTrue_Checkbox, enamorStrikeBuff_IntegerField);
         enamorTrue_Checkbox.addValueChangeListener(event -> {
@@ -103,11 +97,11 @@ public class DamageInput implements GuiHandler{
 
 
         Accordion accordion_crit_pierce_synergy = new Accordion();
-        VerticalLayout layout_crit_pierce_synergy_v = new VerticalLayout();
-        VerticalLayout layout_crit_v = new VerticalLayout();
+        VerticalLayout layout_crit_pierce_synergy_v = createVerticalLayoutDefaultSpacingPaddingFalse();
+        VerticalLayout layout_crit_v = createVerticalLayoutDefaultSpacingPaddingFalse();
         critTrue_Checkbox = new Checkbox("Critical");
-        critBuffANDDebuff_IntegerField = new IntegerField("Critical Damage Buff / Debuff");
-        critResDown = new IntegerField("Crit Res down");
+        critBuffANDDebuff_IntegerField = createIntegerFieldMinimumValueZero("Critical Damage Buff / Debuff");
+        critResDown = createIntegerFieldMinimumValueZero("Crit Res down");
         critBuffANDDebuff_IntegerField.setVisible(false);
         critResDown.setVisible(false);
         layout_crit_v.add(critTrue_Checkbox,critBuffANDDebuff_IntegerField, critResDown);
@@ -118,10 +112,10 @@ public class DamageInput implements GuiHandler{
             critBuffANDDebuff_IntegerField.setValue(0);
         });
 
-        VerticalLayout layout_pierce_v = new VerticalLayout();
+        VerticalLayout layout_pierce_v = createVerticalLayoutDefaultSpacingPaddingFalse();
         pierceTrue_Checkbox = new Checkbox("Pierce");
-        pierceUPResDown_IntegerField = new IntegerField("Pierce Power Buff / Debuff");
-        pierceResDown_IntegerField = new IntegerField("Pierce Res down");
+        pierceUPResDown_IntegerField = createIntegerFieldMinimumValueZero("Pierce Power Buff / Debuff");
+        pierceResDown_IntegerField = createIntegerFieldMinimumValueZero("Pierce Res down");
         pierceUPResDown_IntegerField.setVisible(false);
         pierceResDown_IntegerField.setVisible(false);
         layout_pierce_v.add(pierceTrue_Checkbox, pierceUPResDown_IntegerField, pierceResDown_IntegerField);
@@ -133,10 +127,10 @@ public class DamageInput implements GuiHandler{
         });
 
         //Synergy
-        VerticalLayout layout_synergy_v = new VerticalLayout();
-        synergyUpDown_IntegerField = new IntegerField("Synergy Buff / Debuff");
-        synergyResDown_IntegerField = new IntegerField("Synergy Res down");
-        synergyPartnerATK_IntegerField = new IntegerField("Synergy Partner ATK");
+        VerticalLayout layout_synergy_v = createVerticalLayoutDefaultSpacingPaddingFalse();
+        synergyUpDown_IntegerField = createIntegerFieldMinimumValueZero("Synergy Buff / Debuff");
+        synergyResDown_IntegerField = createIntegerFieldMinimumValueZero("Synergy Res down");
+        synergyPartnerATK_IntegerField = createIntegerFieldMinimumValueZero("Synergy Partner ATK");
         synergyTrue_Checkbox = new Checkbox("Synergy");
         synergyPartnerATK_IntegerField.setVisible(false);
         synergyUpDown_IntegerField.setVisible(false);
@@ -156,17 +150,17 @@ public class DamageInput implements GuiHandler{
         accordion_crit_pierce_synergy.close();
 
         Accordion accordion_weakness_attributeadvantage_v = new Accordion();
-        VerticalLayout layout_weakness_attributeadvantage_v = new VerticalLayout();
-        VerticalLayout layout_attributeAdvantage_v = new VerticalLayout();
+        VerticalLayout layout_weakness_attributeadvantage_v = createVerticalLayoutDefaultSpacingPaddingFalse();
+        VerticalLayout layout_attributeAdvantage_v = createVerticalLayoutDefaultSpacingPaddingFalse();
         attributeAdvantageTrue_Checkbox = new Checkbox("Do you have Attribute Advantage?");
         layout_attributeAdvantage_v.add(attributeAdvantageTrue_Checkbox);
 
-        VerticalLayout layout_weakness_v = new VerticalLayout();
-        weaknessProtectorBuff_IntegerField = new IntegerField("Weakness Protector Buff");
+        VerticalLayout layout_weakness_v = createVerticalLayoutDefaultSpacingPaddingFalse();
+        weaknessProtectorBuff_IntegerField = createIntegerFieldMinimumValueZero("Weakness Protector Buff");
         addToolTip(weaknessProtectorBuff_IntegerField, "Use this if you have ANTI Element from your protector, usually 60");
 
         weakpointTrue_Checkbox = new Checkbox("Weakness Strike");
-        weaknessStrikeBuff_IntegerField = new IntegerField("Weakness Strike Buff");
+        weaknessStrikeBuff_IntegerField = createIntegerFieldMinimumValueZero("Weakness Strike Buff");
         weaknessStrikeBuff_IntegerField.setVisible(false);
         layout_weakness_v.add(weaknessProtectorBuff_IntegerField,weakpointTrue_Checkbox, weaknessStrikeBuff_IntegerField);
         weakpointTrue_Checkbox.addValueChangeListener(event -> {
@@ -178,12 +172,12 @@ public class DamageInput implements GuiHandler{
         accordion_weakness_attributeadvantage_v.close();
 
         Accordion accordion_secretskill = new Accordion();
-        VerticalLayout layout_secretSkill_v = new VerticalLayout();
-        secretSkillfromCharacter_IntegerField = new IntegerField("Soul of Combos Damage from Unit");
+        VerticalLayout layout_secretSkill_v = createVerticalLayoutDefaultSpacingPaddingFalse();
+        secretSkillfromCharacter_IntegerField = createIntegerFieldMinimumValueZero("Soul of Combos Damage from Unit");
         addToolTip(secretSkillfromCharacter_IntegerField, "EX Soul of Combos Damage would be normally 735/765.");
-        secretSkillBuff_IntegerField = new IntegerField("Damage Buff / Debuff");
+        secretSkillBuff_IntegerField = createIntegerFieldMinimumValueZero("Damage Buff / Debuff");
         secretSkillTrue_Checkbox = new Checkbox("Secret Skill");
-        secretDamageResistanceDown_IntegerField = new IntegerField("Damage Resistance down");
+        secretDamageResistanceDown_IntegerField = createIntegerFieldMinimumValueZero("Damage Resistance down");
         secretDamageResistanceDown_IntegerField.setVisible(false);
         secretSkillfromCharacter_IntegerField.setVisible(false);
         secretSkillBuff_IntegerField.setVisible(false);
@@ -202,144 +196,37 @@ public class DamageInput implements GuiHandler{
 
 
         Accordion accordionDef = new Accordion();
-        VerticalLayout layout_def_v = new VerticalLayout();
-        def_ene_IntegerField = new IntegerField("Defence Initial");
-        def_up_IntegerField = new IntegerField("Defence UP");
-        def_down_IntegerField = new IntegerField("Defence DOWN");
+        VerticalLayout layout_def_v = createVerticalLayoutDefaultSpacingPaddingFalse();
+        def_ene_IntegerField = createIntegerFieldMinimumValueZero("Defence Initial");
+        def_up_IntegerField = createIntegerFieldMinimumValueZero("Defence UP");
+        def_down_IntegerField = createIntegerFieldMinimumValueZero("Defence DOWN");
         addToolTip(def_ene_IntegerField,"Select the DEF from the Team Building screen (not in fight DEF)");
-        attributeResBuff_IntegerField = new IntegerField("Attribute Resistance Buff");
-        attributeResDown_IntegerField = new IntegerField("Attribute Resistance Debuff");
-        attackResBuff_IntegerField = new IntegerField("Magic / Physical Res Buff");
-        attackResDown_IntegerField = new IntegerField("Magic / Physical Res Debuff");
+        attributeResBuff_IntegerField = createIntegerFieldMinimumValueZero("Attribute Resistance Buff");
+        attributeResDown_IntegerField = createIntegerFieldMinimumValueZero("Attribute Resistance Debuff");
+        attackResBuff_IntegerField = createIntegerFieldMinimumValueZero("Magic / Physical Res Buff");
+        attackResDown_IntegerField = createIntegerFieldMinimumValueZero("Magic / Physical Res Debuff");
 
         layout_def_v.add(def_ene_IntegerField,def_down_IntegerField, attributeResBuff_IntegerField,attributeResDown_IntegerField,attackResBuff_IntegerField,attackResDown_IntegerField);
         accordionDef.add("Defence / Resistance Enemy", layout_def_v);
         accordionDef.close();
 
-
-        layout_atk_v.setPadding(false);
-        layout_synergy_v.setPadding(false);
-        layout_stunStrike_v.setPadding(false);
-        layout_charmStrike_v.setPadding(false);
-        layout_crit_v.setPadding(false);
-        layout_pierce_v.setPadding(false);
-        layout_weakness_v.setPadding(false);
-        layout_secretSkill_v.setPadding(false);
-        layout_typeAdvantage_v.setPadding(false);
-        layout_def_v.setPadding(false);
-        layout_attributeAdvantage_v.setPadding(false);
-        layout_weakness_attributeadvantage_v.setPadding(false);
-        layout_crit_pierce_synergy_v.setPadding(false);
-        layout_accordian_stun_enamor.setPadding(false);
-
-        layout_atk_v.setSpacing(false);
-        layout_synergy_v.setSpacing(false);
-        layout_stunStrike_v.setSpacing(false);
-        layout_charmStrike_v.setSpacing(false);
-        layout_crit_v.setSpacing(false);
-        layout_pierce_v.setSpacing(false);
-        layout_weakness_v.setSpacing(false);
-        layout_secretSkill_v.setSpacing(false);
-        layout_typeAdvantage_v.setSpacing(false);
-        layout_def_v.setSpacing(false);
-        layout_attributeAdvantage_v.setSpacing(false);
-        layout_accordian_stun_enamor.setSpacing(false);
-        layout_weakness_attributeadvantage_v.setSpacing(false);
-        layout_crit_pierce_synergy_v.setSpacing(false);
-
-        setValue();
-
         layout.add(accordion_atk,accordion_TypeAdvantage, accordion_crit_pierce_synergy,
                 accordion_weakness_attributeadvantage_v,accordion_secretskill,accordionDef,accordion_stun_enamor
                 );
-
     }
 
-    public void setValue(){
-        //Set default value
-        atk_Debuff_IntegerField.setValue(0); 
-        atk_Buff_IntegerField.setValue(0); 
-        atk_PT_IntegerField.setValue(0); 
+    public VerticalLayout createVerticalLayoutDefaultSpacingPaddingFalse(){
+        VerticalLayout tempVerticalLayout = new VerticalLayout();
+        tempVerticalLayout.setPadding(false);
+        tempVerticalLayout.setSpacing(false);
+        return tempVerticalLayout;
+    }
 
-        synergyUpDown_IntegerField.setValue(0); 
-        synergyPartnerATK_IntegerField.setValue(0);
-        synergyResDown_IntegerField.setValue(0);
-
-        stundStrikeMulti_IntegerField.setValue(0); 
-
-        enamorStrikeBuff_IntegerField.setValue(0); 
-
-        critBuffANDDebuff_IntegerField.setValue(0);
-        critResDown.setValue(0);
-
-        pierceUPResDown_IntegerField.setValue(0);
-        pierceResDown_IntegerField.setValue(0);
-
-        weaknessProtectorBuff_IntegerField.setValue(0); 
-        weaknessStrikeBuff_IntegerField.setValue(0);
-
-        secretSkillfromCharacter_IntegerField.setValue(0); 
-        secretSkillBuff_IntegerField.setValue(0);
-
-        secretDamageResistanceDown_IntegerField.setValue(0);
-
-        elementalATKBuff_IntegerField.setValue(0);
-        elementalATKDebuff_IntegerField.setValue(0);
-        magicPhysicalBuff_IntegerField.setValue(0); 
-        magicPhysicalDebuff_IntegerField.setValue(0);
-
-        attributeResBuff_IntegerField.setValue(0);
-        attributeResDown_IntegerField.setValue(0);
-
-        attackResBuff_IntegerField.setValue(0);
-        attackResDown_IntegerField.setValue(0);
-
-        def_ene_IntegerField.setValue(0); 
-        def_up_IntegerField.setValue(0);
-        def_down_IntegerField.setValue(0);
-
-        //Set Minimum
-        atk_Debuff_IntegerField.setMin(0);
-        atk_Buff_IntegerField.setMin(0);
-        atk_PT_IntegerField.setMin(0);
-
-        synergyUpDown_IntegerField.setMin(0);
-        synergyPartnerATK_IntegerField.setMin(0);
-        synergyResDown_IntegerField.setMin(0);
-
-        stundStrikeMulti_IntegerField.setMin(0);
-
-        enamorStrikeBuff_IntegerField.setMin(0);
-
-        critBuffANDDebuff_IntegerField.setMin(0);
-        critResDown.setMin(0);
-
-        pierceUPResDown_IntegerField.setMin(0);
-        pierceResDown_IntegerField.setMin(0);
-
-        weaknessProtectorBuff_IntegerField.setMin(0);
-        weaknessStrikeBuff_IntegerField.setMin(0);
-
-        secretSkillfromCharacter_IntegerField.setMin(0);
-        secretSkillBuff_IntegerField.setMin(0);
-
-        secretDamageResistanceDown_IntegerField.setMin(0);
-
-        elementalATKBuff_IntegerField.setMin(0);
-        elementalATKDebuff_IntegerField.setMin(0);
-        magicPhysicalBuff_IntegerField.setMin(0);
-        magicPhysicalDebuff_IntegerField.setMin(0);
-
-        attributeResBuff_IntegerField.setMin(0);
-        attributeResDown_IntegerField.setMin(0);
-
-        attackResBuff_IntegerField.setMin(0);
-        attackResDown_IntegerField.setMin(0);
-
-        def_ene_IntegerField.setMin(0);
-        def_up_IntegerField.setMin(0);
-        def_down_IntegerField.setMin(0);
-
+    public IntegerField createIntegerFieldMinimumValueZero(String label){
+        IntegerField tempIntegerField = new IntegerField(label);
+        tempIntegerField.setValue(0);
+        tempIntegerField.setMin(0);
+        return tempIntegerField;
     }
 
     public void setValuesFromDamageObject(DamageObject damageObject) {

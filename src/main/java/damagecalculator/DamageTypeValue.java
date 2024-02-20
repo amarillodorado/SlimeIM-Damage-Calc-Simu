@@ -15,10 +15,6 @@ public class DamageTypeValue {
         return damageType;
     }
 
-    public Map<String, Object> getUnitValues() {
-        return unitValues;
-    }
-
     public void addUnitValue(String unitName, Object value) {
         this.unitValues.put(unitName, value);
     }

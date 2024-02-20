@@ -2,20 +2,10 @@ package damagecalculator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Simulator {
-
-    public void setDamageObject(DamageObject damageObject) {
-        this.damageObject = damageObject;
-    }
-
     DamageObject damageObject;
-
-    public void setMaxSkillCost(int maxSkillCost) {
-        this.maxSkillCost = maxSkillCost;
-    }
-
+    public List<DamageResult> results = new ArrayList<>();
     int maxSkillCost;
 
     public static void main(String[] args) {
@@ -35,15 +25,12 @@ public class Simulator {
                 .setDef_Initial(7460)
                 .setAttributeResDown(20);
         System.out.println(simulator.damageObject.calculateDamage());
-
-
-        //System.out.println(synergyDamage + " "+ elementalATKBuff + " " + elementalATKDebuff + " "+ MagicPhysicalDebuff+" "+MagicPhysicalBuff);
     }
 
 
     public void combinationHandler(List<Unit> allUnits, int combinationSize) {
         results = new ArrayList<>();
-        if(combinationSize > allUnits.size()) {
+        if (combinationSize > allUnits.size()) {
             System.out.println("Fehler: Die Anzahl der ausgewählten Units (" + combinationSize +
                     ") ist größer als d" +
                     "ie verfügbaren Units (" + allUnits.size() + ").");
@@ -68,7 +55,6 @@ public class Simulator {
         }
     }
 
-    public List<DamageResult> results = new ArrayList<>();
     private void simulateDamage(Unit... units) {
         DamageObject tempDamageObject = new DamageObject();
         tempDamageObject.addDamageObject(damageObject);
@@ -76,7 +62,7 @@ public class Simulator {
 
         // Aggregation der Werte für jede Unit in der Liste
         for (Unit unit : units) {
-            tempAggregationOfSkillCost += unit.getSkillcost();
+            tempAggregationOfSkillCost += unit.getSkillCost();
             if (maxSkillCost != 0 && tempAggregationOfSkillCost > maxSkillCost) return;
             tempDamageObject.addDamageObject(unit.getDamageObject());
         }
@@ -90,6 +76,14 @@ public class Simulator {
             }
             unitNames.append(unit.getName());
         }
-        results.add(new DamageResult("[" + unitNames.toString() + "]", damage));
+        results.add(new DamageResult("[" + unitNames + "]", damage));
+    }
+
+    public void setMaxSkillCost(int maxSkillCost) {
+        this.maxSkillCost = maxSkillCost;
+    }
+
+    public void setDamageObject(DamageObject damageObject) {
+        this.damageObject = damageObject;
     }
 }

@@ -3,13 +3,12 @@ package damagecalculator;
 public class Unit{
 
     private String name;
-
-    private int skillcost;
+    private int skillCost;
     private DamageObject damageObject;
 
-    public Unit(String name, int skillcost, DamageObject damageObject){
+    public Unit(String name, int skillCost, DamageObject damageObject){
         this.name = name;
-        this.skillcost = skillcost;
+        this.skillCost = skillCost;
         this.damageObject = damageObject;
     }
 
@@ -29,11 +28,11 @@ public class Unit{
         this.damageObject = damageObject;
     }
 
-    public int getSkillcost() {
-        return skillcost;
+    public int getSkillCost() {
+        return skillCost;
     }
 
-    public void setSkillcost(int skillcost) {
-        this.skillcost = skillcost;
+    public void setSkillCost(int skillCost) {
+        this.skillCost = skillCost;
     }
 }

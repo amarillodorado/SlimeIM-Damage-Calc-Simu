@@ -19,10 +19,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.StreamResource;
 import damagecalculator.*;
-
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +46,7 @@ public class MainView extends VerticalLayout implements GuiHandler {
         top.setAlignItems(Alignment.CENTER);
         top.setJustifyContentMode(JustifyContentMode.CENTER);
 
-        Span heading = new Span("Slime Isekai Memories Damage Calculator & Simulator Beta 3.0");
+        Span heading = new Span("Slime Isekai Memories Damage Calculator & Simulator Beta 4.0");
         heading.getStyle().set("font-weight", "bold");
 
         Button infoButton = new Button(new Icon(VaadinIcon.INFO));
@@ -58,13 +55,16 @@ public class MainView extends VerticalLayout implements GuiHandler {
             VerticalLayout layout_main = new VerticalLayout();
             VerticalLayout layout_infoText = new VerticalLayout();
             VerticalLayout layout_guide = new VerticalLayout();
-            Span infoText = new Span("Thanks to @shimizawa on youtube for providing the base formula.");
-            Span infoText2 = new Span("For suggestions or bug reports contact @amarillodorado (@Aurora) on discord.");
-            Span guideText = new Span("For a small showcase click the following link");
-            Span guideText2 = new Span("Coming soon!");
 
-            layout_infoText.add(infoText,infoText2);
-            layout_guide.add(guideText, guideText2);
+            Span infoText2 = new Span("For suggestions or bug reports contact @amarillodorado (@Aurora) on discord.");
+            Span guideText = new Span("For a small showcase / guide click the following link");
+            Span guideText2 = new Span("https://www.youtube.com/watch?v=sen_DD0_nRg");
+            Span guideText3 = new Span("For Pierce, Synergy, Critical, Stun Strike, Enamor Strike. The Buffs and Debuffs can be substracted or added.");
+            Span guideText4 = new Span("E.g. Enemy buff with pierce resistance (20%) or reduce your pierce damage (30%) you can substract it from the buffs / Resistance downs (40%).");
+            Span guideText5 = new Span("If you would hit with pierce your damage would be reduced by -10%.");
+
+            layout_infoText.add(infoText2);
+            layout_guide.add(guideText, guideText2, guideText3,guideText4,guideText5);
             layout_main.add(layout_infoText, layout_guide);
             newDialog.add(layout_main);
             newDialog.open();
@@ -310,9 +310,7 @@ public class MainView extends VerticalLayout implements GuiHandler {
                 updateSelectedUnitsDisplay();
             });
             Button editButton = new Button(new Icon(VaadinIcon.PENCIL));
-            editButton.addClickListener(e ->{
-                openEditDialog(unit);
-            });
+            editButton.addClickListener(e -> openEditDialog(unit));
             temp.add(editButton,deleteButton);
             return temp;
         }).setFlexGrow(0).setWidth("120px");
@@ -350,7 +348,7 @@ public class MainView extends VerticalLayout implements GuiHandler {
         TextField nameField = new TextField("Name");
         nameField.setValue(unitToEdit.getName());
         IntegerField skillCost = new IntegerField("Skillcost");
-        skillCost.setValue(unitToEdit.getSkillcost());
+        skillCost.setValue(unitToEdit.getSkillCost());
 
         DamageInput damageInput = new DamageInput(this);
         damageInput.initializeDamageDialog(fields);
@@ -360,7 +358,7 @@ public class MainView extends VerticalLayout implements GuiHandler {
         Button saveButton = new Button("Save");
         saveButton.addClickListener(event ->{
             unitToEdit.setName(nameField.getValue());
-            unitToEdit.setSkillcost(skillCost.getValue());
+            unitToEdit.setSkillCost(skillCost.getValue());
             DamageObject updatedDamageObject = damageInput.createObject();
             unitToEdit.setDamageObject(updatedDamageObject);
 
@@ -378,7 +376,7 @@ public class MainView extends VerticalLayout implements GuiHandler {
         DamageObject damageObject = unit.getDamageObject();
         switch (damageType) {
             case "Skillcost":
-                return unit.getSkillcost();
+                return unit.getSkillCost();
             // Boolesche Werte werden direkt zurückgegeben
             case "Synergy Active":
                 return damageObject.isSynergyTrue();
@@ -394,8 +392,6 @@ public class MainView extends VerticalLayout implements GuiHandler {
                 return damageObject.isPierceTrue();
             case "Weakpoint Active":
                 return damageObject.isWeakpointTrue();
-
-
             // Numerische Werte werden als Integer zurückgegeben
             case "ATK Debuff":
                 return (int)damageObject.getAtk_Debuff();
@@ -480,6 +476,6 @@ public class MainView extends VerticalLayout implements GuiHandler {
 
     public void exceptionObjectCreationPopUp(){
         Notification.show("Make sure all fields have a value!");
-    };
+    }
 
 }

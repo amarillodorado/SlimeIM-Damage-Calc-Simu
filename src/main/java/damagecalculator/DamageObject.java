@@ -153,9 +153,7 @@ public class DamageObject {
         double weaknessStrikeUP = weaknessStrikeBuff / 100;
         double weakpoint = weakpointTrue ? damageUP + pierce * weaknessStrikeUP : damageUP;
 
-        double checkvalidValue = weakpoint >= 0 ? weakpoint : 1;
-
-        return checkvalidValue;
+        return weakpoint;
     }
 
 

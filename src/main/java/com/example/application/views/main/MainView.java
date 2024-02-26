@@ -5,6 +5,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
@@ -58,13 +59,24 @@ public class MainView extends VerticalLayout implements GuiHandler {
 
             Span infoText2 = new Span("For suggestions or bug reports contact @amarillodorado (@Aurora) on discord.");
             Span guideText = new Span("For a small showcase / guide click the following link");
-            Span guideText2 = new Span("https://www.youtube.com/watch?v=sen_DD0_nRg");
+            Icon youtubeIcon = VaadinIcon.YOUTUBE.create();
+            Anchor youtubeLink = new Anchor("https://www.youtube.com/watch?v=sen_DD0_nRg", youtubeIcon);
+            youtubeLink.setTarget("_blank");
             Span guideText3 = new Span("For Pierce, Synergy, Critical, Stun Strike, Enamor Strike. The Buffs and Debuffs can be substracted or added.");
             Span guideText4 = new Span("E.g. Enemy buff with pierce resistance (20%) or reduce your pierce damage (30%) you can substract it from the buffs / Resistance downs (40%).");
             Span guideText5 = new Span("If you would hit with pierce your damage would be reduced by -10%.");
+            Image enemyResistance = new Image("icons/EnemyResistance.jpg", "EnemyResistance");
+            enemyResistance.setHeight("300px");
+            enemyResistance.setWidth("600px");
+            Image characterSpecialTrait = new Image ("icons/CharacterSpecialTrait.jpg","Special Trait");
+            characterSpecialTrait.setWidth("600px");
+            characterSpecialTrait.setHeight("300px");
+            Span introduction = new Span("To get a more accurate calculation also consider the following things!");
+            Span enemyResistanceTextDescription = new Span("Make sure to add the magic / physical debuff into 'Magic / Physical Res Debuff' field.");
+            Span characterSpecialTraitDescription = new Span("Make sure to also check if the EX Ability Effect Individual Mercy is applied. It is not listed in the buffs during battle!");
 
             layout_infoText.add(infoText2);
-            layout_guide.add(guideText, guideText2, guideText3,guideText4,guideText5);
+            layout_guide.add(guideText, youtubeLink, guideText3,guideText4,guideText5,introduction,enemyResistance,enemyResistanceTextDescription,characterSpecialTrait,characterSpecialTraitDescription);
             layout_main.add(layout_infoText, layout_guide);
             newDialog.add(layout_main);
             newDialog.open();

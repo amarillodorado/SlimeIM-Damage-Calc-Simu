@@ -139,7 +139,6 @@ public class DamageObject {
         double pierceUP = pierceUPResDown;
         double pierce = pierceTrue ? pierceDamage + pierceDamage * pierceUP / 100 : secretDamageRes;
 
-
         // Attribute Advantage
         double attributeAdvantage = attributeAdvantageTrue ? pierce * 1.5 : pierce;
 

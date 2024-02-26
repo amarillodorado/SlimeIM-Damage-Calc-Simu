@@ -10,21 +10,25 @@ public class Simulator {
 
     public static void main(String[] args) {
         Simulator simulator = new Simulator();
-        simulator.damageObject = new DamageObject().setAtk_Initial(24414).setMagicPhysicalBuff(80).setElementalATKBuff(70)
-                .setCritTrue(true)
-                .setAttributeAdvantageTrue(true)
-                .setWeaknessStrikeBuff(240)
-                .setWeakpointTrue(true)
-                .setWeaknessProtectorBuff(60)
-                .setSecretSkillfromCharacter(735)
+        /*
+        simulator.damageObject = new DamageObject().setAtk_Initial(23418)
+                        .setElementalATKBuff(85)
+                                .setMagicPhysicalBuff(75)
+                                        .setCritTrue(true)
+                                                .setAttributeAdvantageTrue(true)
+                                                        .setWeaknessProtectorBuff(60)
+                                                                .setWeakpointTrue(true)
+                                                                        .setWeaknessStrikeBuff(220)
+                                                                                .setSecretSkillBuff(80)
+                                                                                        .setSecretSkillfromCharacter(735)
+                                                                                                .setSecretDamageResistanceDown(185)
+                                                                                                        .setDef_Initial(1352)
                 .setSecretSkillTrue(true)
-                .setSecretDamageResistanceDown(155)
-                .setSynergyTrue(true)
-                .setSynergyPartnerATK(6109)
-                .setSynergyUpDown(40)
-                .setDef_Initial(7460)
-                .setAttributeResDown(20);
-        System.out.println(simulator.damageObject.calculateDamage());
+                .setAttackResDown(65)
+                .setCritBuffANDDebuff(8);
+
+         */
+        System.out.println(Math.round(simulator.damageObject.calculateDamage()));
     }
 
 
